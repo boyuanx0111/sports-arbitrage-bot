@@ -42,7 +42,6 @@ When an arbitrage opportunity is detected, it:
 | Database | PostgreSQL |
 | Browser Automation | Playwright |
 | ORM | SQLAlchemy |
-| Notifications | Discord, Telegram |
 | Containerization | Docker |
 | CI/CD | GitHub Actions |
 
