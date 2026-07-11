@@ -11,11 +11,9 @@
 - Scan multiple sportsbooks for arbitrage opportunities
 - Calculate optimal stake sizes and guaranteed profit
 - Automatic bet execution using browser automation
-- Paper trading / simulation mode
 - Live web dashboard
 - Betting and profit history
 - Logging and error handling
-- Discord and Telegram notifications
 
 ---
 
