@@ -226,62 +226,61 @@ Examples include:
 
 # Roadmap
 
-## Phase 1 – Project Setup ✅
+## Development Roadmap
 
-* GitHub repository
-* Express backend
-* React (Vite) frontend
-* Initial project structure
+### Phase 1 — Project Setup -- COMPLETE
+- Initialise GitHub repository
+- Set up backend (Node.js + Express)
+- Set up frontend (React + Vite)
+- Configure project structure
+- Install dependencies and development tools
 
----
+### Phase 2 — Backend Foundation -- COMPLETE
+- Configure Express server
+- Create routes, controllers and services
+- Add middleware and logging
+- Build initial API structure
+- Verify backend with development server
 
-## Phase 2 – Backend Foundation ✅
+### Phase 3 — Arbitrage Detection Engine
+- Build arbitrage calculation logic
+- Create calculation utilities
+- Develop arbitrage API endpoint
+- Validate requests and responses
+- Test with Postman
+- Add unit tests
 
-* Layered architecture
-* Routes
-* Controllers
-* Services
-* Configuration
-* Utilities
-* Health endpoint
-* Placeholder odds endpoint
+### Phase 4 — Sportsbook Integration
+- Connect to live odds sources
+- Standardise bookmaker data
+- Retrieve and compare odds
+- Feed live odds into the arbitrage engine
 
----
+### Phase 5 — Browser Automation
+- Integrate Playwright
+- Log in to supported sportsbooks
+- Navigate betting markets
+- Place bets automatically
+- Handle errors and confirmations
 
-## Phase 3 – Live Odds Integration
+### Phase 6 — Frontend Dashboard
+- Build React dashboard
+- Display live arbitrage opportunities
+- Show betting history and profit
+- Add bot controls and status monitoring
 
-* Connect to The Odds API
-* Fetch live odds
-* Parse API responses
-* Support multiple bookmakers
+### Phase 7 — Database & Persistence
+- Store betting history
+- Save arbitrage opportunities
+- Track profit and performance
+- Manage application settings
 
----
-
-## Phase 4 – Arbitrage Engine
-
-* Detect arbitrage opportunities
-* Calculate optimal stake sizes
-* Calculate guaranteed profit
-* Paper trading mode
-
----
-
-## Phase 5 – Frontend Dashboard
-
-* Live odds display
-* Arbitrage opportunities
-* Profit calculations
-* Dashboard controls
-
----
-
-## Phase 6 – Automation
-
-* Playwright browser automation
-* Automatic sportsbook login
-* Automatic bet placement
-* Bet verification
-* Notifications
+### Phase 8 — Testing & Deployment
+- End-to-end testing
+- Improve error handling
+- Optimise performance
+- Prepare production deployment
+- Complete documentation
 
 ---
 
