@@ -14,15 +14,15 @@
 
 * Express.js backend
 * React (Vite) frontend
-* Modular backend architecture
+* Layered backend architecture
 * Health check endpoint
 * Placeholder odds endpoint
-* GitHub repository and version control
+* GitHub version control
 
 ### Next
 
-* Integrate live odds API
-* Build arbitrage calculation engine
+* Integrate a live odds API
+* Build the arbitrage calculation engine
 
 ---
 
@@ -35,13 +35,13 @@
 * Modular backend architecture
 * Health endpoint
 * Placeholder odds endpoint
-* Clean and scalable project structure
+* Scalable project structure
 
 ## Planned
 
-* Live odds retrieval from sportsbooks
-* Arbitrage detection engine
-* Stake calculator
+* Live odds retrieval
+* Arbitrage detection
+* Stake calculation
 * Browser automation with Playwright
 * Live dashboard
 * Profit tracking
@@ -56,13 +56,13 @@ The completed application will continuously monitor supported sportsbooks for ar
 
 The planned workflow is:
 
-1. Fetch the latest odds
+1. Fetch the latest odds from supported sportsbooks
 2. Detect arbitrage opportunities
-3. Calculate optimal stake sizes
+3. Calculate the optimal stake for each outcome
 4. Automatically place both bets (optional)
-5. Track betting history and profit
+5. Record betting history and profit
 
-The current version establishes the backend and frontend architecture that future phases will build upon.
+The current version establishes the project architecture that future phases will build upon.
 
 ---
 
@@ -74,7 +74,7 @@ The current version establishes the backend and frontend architecture that futur
 | Frontend           | React, Vite              |
 | Package Manager    | npm                      |
 | Version Control    | Git & GitHub             |
-| Odds API           | The Odds API *(planned)* |
+| Odds Data          | The Odds API *(planned)* |
 | Browser Automation | Playwright *(planned)*   |
 
 ---
@@ -94,6 +94,12 @@ sports-arb-bot/
 │   │   │   ├── odds.js
 │   │   │   ├── arbitrage.js
 │   │   │   └── bookmakers.js
+│   │   │
+│   │   ├── controllers/
+│   │   │   ├── healthController.js
+│   │   │   ├── oddsController.js
+│   │   │   ├── arbitrageController.js
+│   │   │   └── bookmakersController.js
 │   │   │
 │   │   ├── services/
 │   │   │   ├── healthService.js
@@ -132,7 +138,7 @@ sports-arb-bot/
 
 # Backend Architecture
 
-The backend follows a simple layered architecture:
+The backend follows a layered architecture to keep responsibilities separated and the codebase easy to extend.
 
 ```text
 Frontend
@@ -141,15 +147,18 @@ Frontend
 Routes
     │
     ▼
+Controllers
+    │
+    ▼
 Services
     │
     ▼
-Odds API / Calculations
+Odds API / Business Logic
 ```
 
 ### Routes
 
-Define the API endpoints.
+Define the application's API endpoints.
 
 Examples:
 
@@ -157,24 +166,61 @@ Examples:
 * `/odds`
 * `/arbitrage`
 
+Routes simply direct incoming requests to the appropriate controller.
+
+---
+
+### Controllers
+
+Handle HTTP requests and responses.
+
+Responsibilities include:
+
+* Receiving requests
+* Reading parameters or request data
+* Calling the appropriate service
+* Returning JSON responses
+
+Controllers coordinate the request but contain very little business logic.
+
+---
+
 ### Services
 
 Contain the application's business logic.
 
-Examples:
+Examples include:
 
-* Fetch live odds
-* Detect arbitrage
-* Calculate stake sizes
-* Place bets
+* Fetching odds from external APIs
+* Detecting arbitrage opportunities
+* Calculating optimal stake sizes
+* Placing bets
+* Managing bookmaker interactions
+
+Most of the project's functionality will be implemented within this layer.
+
+---
 
 ### Config
 
-Stores application configuration.
+Stores application configuration such as:
+
+* Server port
+* API keys
+* Refresh intervals
+
+---
 
 ### Utils
 
-Reusable helper functions used throughout the project.
+Contains reusable helper functions shared across the application.
+
+Examples include:
+
+* Odds conversion
+* Stake calculations
+* Date formatting
+* General utility functions
 
 ---
 
@@ -191,7 +237,9 @@ Reusable helper functions used throughout the project.
 
 ## Phase 2 – Backend Foundation ✅
 
+* Layered architecture
 * Routes
+* Controllers
 * Services
 * Configuration
 * Utilities
@@ -212,7 +260,7 @@ Reusable helper functions used throughout the project.
 ## Phase 4 – Arbitrage Engine
 
 * Detect arbitrage opportunities
-* Calculate stake sizes
+* Calculate optimal stake sizes
 * Calculate guaranteed profit
 * Paper trading mode
 
@@ -278,7 +326,7 @@ npm run dev
 
 # Environment Variables
 
-Create a `.env` file inside the backend directory.
+Create a `.env` file inside the `backend` directory.
 
 ```env
 PORT=3000
@@ -288,7 +336,7 @@ ODDS_API_KEY=
 HEADLESS=true
 ```
 
-Additional variables for sportsbook accounts and notifications will be added in later phases.
+Additional environment variables for sportsbook credentials and notifications will be introduced in later phases.
 
 ---
 
@@ -300,9 +348,7 @@ The MVP focuses on:
 * Detecting arbitrage opportunities in real time
 * Calculating optimal stake sizes
 * Providing a simple web dashboard
-* Building a clean and maintainable codebase
-
-Once the MVP is stable, additional sportsbooks and features can be added without major architectural changes.
+* Building a clean and maintainable codebase that can be extended as new sportsbooks and features are added
 
 ---
 
