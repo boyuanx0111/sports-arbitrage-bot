@@ -6,46 +6,80 @@
 
 ---
 
-## Features
+# Current Status
 
-- Scan multiple sportsbooks for arbitrage opportunities
-- Calculate optimal stake sizes and guaranteed profit
-- Automatic bet execution using browser automation
-- Live web dashboard
-- Betting and profit history
-- Logging and error handling
+**Current Phase:** Phase 2 – Backend Foundation ✅
 
----
+### Completed
 
-## How It Works
+* Express.js backend
+* React (Vite) frontend
+* Modular backend architecture
+* Health check endpoint
+* Placeholder odds endpoint
+* GitHub repository and version control
 
-The bot continuously monitors odds from supported sportsbooks.
+### Next
 
-When an arbitrage opportunity is detected, it:
-
-1. Collects the latest odds
-2. Calculates whether an arbitrage opportunity exists
-3. Determines the optimal stake for each outcome
-4. Automatically places both bets (if enabled)
-5. Records the result and profit
+* Integrate live odds API
+* Build arbitrage calculation engine
 
 ---
 
-## Tech Stack
+# Features
 
-| Component | Technology |
-|-----------|------------|
-| Backend | Python, FastAPI |
-| Frontend | React, Next.js |
-| Database | PostgreSQL |
-| Browser Automation | Playwright |
-| ORM | SQLAlchemy |
-| Containerization | Docker |
-| CI/CD | GitHub Actions |
+## Current
+
+* Express.js backend API
+* React frontend
+* Modular backend architecture
+* Health endpoint
+* Placeholder odds endpoint
+* Clean and scalable project structure
+
+## Planned
+
+* Live odds retrieval from sportsbooks
+* Arbitrage detection engine
+* Stake calculator
+* Browser automation with Playwright
+* Live dashboard
+* Profit tracking
+* Betting history
+* Notifications
 
 ---
 
-## Project Structure
+# How It Works
+
+The completed application will continuously monitor supported sportsbooks for arbitrage opportunities.
+
+The planned workflow is:
+
+1. Fetch the latest odds
+2. Detect arbitrage opportunities
+3. Calculate optimal stake sizes
+4. Automatically place both bets (optional)
+5. Track betting history and profit
+
+The current version establishes the backend and frontend architecture that future phases will build upon.
+
+---
+
+# Tech Stack
+
+| Component          | Technology               |
+| ------------------ | ------------------------ |
+| Backend            | Node.js, Express.js      |
+| Frontend           | React, Vite              |
+| Package Manager    | npm                      |
+| Version Control    | Git & GitHub             |
+| Odds API           | The Odds API *(planned)* |
+| Browser Automation | Playwright *(planned)*   |
+
+---
+
+# Project Structure
 
 ```text
 sports-arb-bot/
@@ -83,6 +117,7 @@ sports-arb-bot/
 │   └── package-lock.json
 │
 ├── frontend/
+│   └── src/
 │
 ├── docs/
 │
@@ -95,144 +130,182 @@ sports-arb-bot/
 
 ---
 
-## Roadmap
+# Backend Architecture
 
-### Phase 1 – Foundation
-- [ ] Repository setup
-- [ ] FastAPI backend
-- [ ] React/Next.js frontend
-- [ ] PostgreSQL integration
-- [ ] Configuration management
+The backend follows a simple layered architecture:
 
-### Phase 2 – Arbitrage Engine
-- [ ] Fetch odds from two sportsbooks
-- [ ] Arbitrage detection engine
-- [ ] Stake calculator
-- [ ] Paper trading mode
+```text
+Frontend
+    │
+    ▼
+Routes
+    │
+    ▼
+Services
+    │
+    ▼
+Odds API / Calculations
+```
 
-### Phase 3 – Automation
-- [ ] Playwright browser automation
-- [ ] Automatic login
-- [ ] Automatic bet placement
-- [ ] Bet verification
-- [ ] Basic risk management
+### Routes
 
-### Phase 4 – Dashboard
-- [ ] Live arbitrage opportunities
-- [ ] Betting history
-- [ ] Profit tracking
-- [ ] Bot controls (Start / Stop)
+Define the API endpoints.
 
-### Phase 5 – Polish
-- [ ] Docker deployment
-- [ ] CI/CD pipeline
-- [ ] Improved logging
-- [ ] Notifications
-- [ ] Performance improvements
+Examples:
+
+* `/health`
+* `/odds`
+* `/arbitrage`
+
+### Services
+
+Contain the application's business logic.
+
+Examples:
+
+* Fetch live odds
+* Detect arbitrage
+* Calculate stake sizes
+* Place bets
+
+### Config
+
+Stores application configuration.
+
+### Utils
+
+Reusable helper functions used throughout the project.
 
 ---
 
-## Installation
+# Roadmap
+
+## Phase 1 – Project Setup ✅
+
+* GitHub repository
+* Express backend
+* React (Vite) frontend
+* Initial project structure
+
+---
+
+## Phase 2 – Backend Foundation ✅
+
+* Routes
+* Services
+* Configuration
+* Utilities
+* Health endpoint
+* Placeholder odds endpoint
+
+---
+
+## Phase 3 – Live Odds Integration
+
+* Connect to The Odds API
+* Fetch live odds
+* Parse API responses
+* Support multiple bookmakers
+
+---
+
+## Phase 4 – Arbitrage Engine
+
+* Detect arbitrage opportunities
+* Calculate stake sizes
+* Calculate guaranteed profit
+* Paper trading mode
+
+---
+
+## Phase 5 – Frontend Dashboard
+
+* Live odds display
+* Arbitrage opportunities
+* Profit calculations
+* Dashboard controls
+
+---
+
+## Phase 6 – Automation
+
+* Playwright browser automation
+* Automatic sportsbook login
+* Automatic bet placement
+* Bet verification
+* Notifications
+
+---
+
+# Installation
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/sports-arb-bot.git
-cd sports-arb-bot
+git clone https://github.com/YOUR_USERNAME/sports-arbitrage-bot.git
+cd sports-arbitrage-bot
 ```
 
-Create a virtual environment:
+Install backend dependencies:
 
 ```bash
-python -m venv .venv
+cd backend
+npm install
 ```
 
-Activate the environment:
-
-**Windows**
+Install frontend dependencies:
 
 ```bash
-.venv\Scripts\activate
-```
-
-**macOS/Linux**
-
-```bash
-source .venv/bin/activate
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
+cd ../frontend
+npm install
 ```
 
 Run the backend:
 
 ```bash
-uvicorn backend.main:app --reload
+cd backend
+npm run dev
+```
+
+Run the frontend:
+
+```bash
+cd frontend
+npm run dev
 ```
 
 ---
 
-## Environment Variables
+# Environment Variables
 
-Create a `.env` file:
+Create a `.env` file inside the backend directory.
 
 ```env
-DATABASE_URL=
+PORT=3000
 
-BOOKMAKER_USERNAME=
-BOOKMAKER_PASSWORD=
-
-DISCORD_WEBHOOK=
-
-TELEGRAM_BOT_TOKEN=
-TELEGRAM_CHAT_ID=
+ODDS_API_KEY=
 
 HEADLESS=true
-
-LOG_LEVEL=INFO
 ```
+
+Additional variables for sportsbook accounts and notifications will be added in later phases.
 
 ---
 
-## Development
+# Project Goals
 
-Run tests:
+The MVP focuses on:
 
-```bash
-pytest
-```
+* Supporting two sportsbooks
+* Detecting arbitrage opportunities in real time
+* Calculating optimal stake sizes
+* Providing a simple web dashboard
+* Building a clean and maintainable codebase
 
-Format code:
-
-```bash
-black .
-```
-
-Lint:
-
-```bash
-ruff check .
-```
+Once the MVP is stable, additional sportsbooks and features can be added without major architectural changes.
 
 ---
 
-## Project Goals
-
-The initial version of the project focuses on:
-
-- Supporting **two sportsbooks**
-- Detecting arbitrage opportunities in real time
-- Automatically placing both bets using Playwright
-- Providing a simple web dashboard for monitoring opportunities
-- Building a clean, maintainable codebase that can be extended with additional sportsbooks
-
-Once the core workflow is stable, additional sportsbooks and features can be added without major architectural changes.
-
----
-
-## License
+# License
 
 This project is licensed under the MIT License.
