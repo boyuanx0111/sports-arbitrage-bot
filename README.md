@@ -51,44 +51,45 @@ When an arbitrage opportunity is detected, it:
 sports-arb-bot/
 │
 ├── backend/
-│   ├── api/
-│   │   ├── routes.py
-│   │   └── schemas.py
+│   ├── src/
+│   │   ├── app.js
+│   │   ├── server.js
+│   │   │
+│   │   ├── routes/
+│   │   │   ├── health.js
+│   │   │   ├── odds.js
+│   │   │   ├── arbitrage.js
+│   │   │   └── bookmakers.js
+│   │   │
+│   │   ├── services/
+│   │   │   ├── healthService.js
+│   │   │   ├── oddsService.js
+│   │   │   ├── arbitrageService.js
+│   │   │   ├── bookmakerService.js
+│   │   │   └── betService.js
+│   │   │
+│   │   ├── config/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── utils/
+│   │   │   ├── helpers.js
+│   │   │   ├── oddsConverter.js
+│   │   │   └── stakeCalculator.js
+│   │   │
+│   │   └── data/
+│   │       └── supportedBookmakers.js
 │   │
-│   ├── arbitrage/
-│   │   ├── engine.py
-│   │   └── calculator.py
-│   │
-│   ├── bookmakers/
-│   │   ├── base.py
-│   │   ├── bet365.py
-│   │   └── sportsbet.py
-│   │
-│   ├── database/
-│   │   ├── database.py
-│   │   └── models.py
-│   │
-│   ├── services/
-│   │   ├── bot.py
-│   │   └── history.py
-│   │
-│   ├── config.py
-│   └── main.py
+│   ├── package.json
+│   └── package-lock.json
 │
 ├── frontend/
-│
-├── tests/
-│
-├── docker/
 │
 ├── docs/
 │
 ├── .github/
 │   └── workflows/
 │
-├── docker-compose.yml
-├── requirements.txt
-├── pyproject.toml
+├── .gitignore
 └── README.md
 ```
 
