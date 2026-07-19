@@ -6,232 +6,351 @@
 
 ---
 
-## Features
+# Current Status
 
-- Scan multiple sportsbooks for arbitrage opportunities
-- Calculate optimal stake sizes and guaranteed profit
-- Automatic bet execution using browser automation
-- Live web dashboard
-- Betting and profit history
-- Logging and error handling
+**Current Phase:** Phase 2 – Backend Foundation ✅
 
----
+### Completed
 
-## How It Works
+* Express.js backend
+* React (Vite) frontend
+* Layered backend architecture
+* Health check endpoint
+* Placeholder odds endpoint
+* GitHub version control
 
-The bot continuously monitors odds from supported sportsbooks.
+### Next
 
-When an arbitrage opportunity is detected, it:
-
-1. Collects the latest odds
-2. Calculates whether an arbitrage opportunity exists
-3. Determines the optimal stake for each outcome
-4. Automatically places both bets (if enabled)
-5. Records the result and profit
+* Integrate a live odds API
+* Build the arbitrage calculation engine
 
 ---
 
-## Tech Stack
+# Features
 
-| Component | Technology |
-|-----------|------------|
-| Backend | Python, FastAPI |
-| Frontend | React, Next.js |
-| Database | PostgreSQL |
-| Browser Automation | Playwright |
-| ORM | SQLAlchemy |
-| Containerization | Docker |
-| CI/CD | GitHub Actions |
+## Current
+
+* Express.js backend API
+* React frontend
+* Modular backend architecture
+* Health endpoint
+* Placeholder odds endpoint
+* Scalable project structure
+
+## Planned
+
+* Live odds retrieval
+* Arbitrage detection
+* Stake calculation
+* Browser automation with Playwright
+* Live dashboard
+* Profit tracking
+* Betting history
+* Notifications
 
 ---
 
-## Project Structure
+# How It Works
+
+The completed application will continuously monitor supported sportsbooks for arbitrage opportunities.
+
+The planned workflow is:
+
+1. Fetch the latest odds from supported sportsbooks
+2. Detect arbitrage opportunities
+3. Calculate the optimal stake for each outcome
+4. Automatically place both bets (optional)
+5. Record betting history and profit
+
+The current version establishes the project architecture that future phases will build upon.
+
+---
+
+# Tech Stack
+
+| Component          | Technology               |
+| ------------------ | ------------------------ |
+| Backend            | Node.js, Express.js      |
+| Frontend           | React, Vite              |
+| Package Manager    | npm                      |
+| Version Control    | Git & GitHub             |
+| Odds Data          | The Odds API *(planned)* |
+| Browser Automation | Playwright *(planned)*   |
+
+---
+
+# Project Structure
 
 ```text
 sports-arb-bot/
 │
 ├── backend/
-│   ├── api/
-│   │   ├── routes.py
-│   │   └── schemas.py
+│   ├── src/
+│   │   ├── app.js
+│   │   ├── server.js
+│   │   │
+│   │   ├── routes/
+│   │   │   ├── health.js
+│   │   │   ├── odds.js
+│   │   │   ├── arbitrage.js
+│   │   │   └── bookmakers.js
+│   │   │
+│   │   ├── controllers/
+│   │   │   ├── healthController.js
+│   │   │   ├── oddsController.js
+│   │   │   ├── arbitrageController.js
+│   │   │   └── bookmakersController.js
+│   │   │
+│   │   ├── services/
+│   │   │   ├── healthService.js
+│   │   │   ├── oddsService.js
+│   │   │   ├── arbitrageService.js
+│   │   │   ├── bookmakerService.js
+│   │   │   └── betService.js
+│   │   │
+│   │   ├── config/
+│   │   │   └── index.js
+│   │   │
+│   │   ├── utils/
+│   │   │   ├── helpers.js
+│   │   │   ├── oddsConverter.js
+│   │   │   └── stakeCalculator.js
+│   │   │
+│   │   └── data/
+│   │       └── supportedBookmakers.js
 │   │
-│   ├── arbitrage/
-│   │   ├── engine.py
-│   │   └── calculator.py
-│   │
-│   ├── bookmakers/
-│   │   ├── base.py
-│   │   ├── bet365.py
-│   │   └── sportsbet.py
-│   │
-│   ├── database/
-│   │   ├── database.py
-│   │   └── models.py
-│   │
-│   ├── services/
-│   │   ├── bot.py
-│   │   └── history.py
-│   │
-│   ├── config.py
-│   └── main.py
+│   ├── package.json
+│   └── package-lock.json
 │
 ├── frontend/
-│
-├── tests/
-│
-├── docker/
+│   └── src/
 │
 ├── docs/
 │
 ├── .github/
 │   └── workflows/
 │
-├── docker-compose.yml
-├── requirements.txt
-├── pyproject.toml
+├── .gitignore
 └── README.md
 ```
 
 ---
 
-## Roadmap
+# Backend Architecture
 
-### Phase 1 – Foundation
-- [ ] Repository setup
-- [ ] FastAPI backend
-- [ ] React/Next.js frontend
-- [ ] PostgreSQL integration
-- [ ] Configuration management
+The backend follows a layered architecture to keep responsibilities separated and the codebase easy to extend.
 
-### Phase 2 – Arbitrage Engine
-- [ ] Fetch odds from two sportsbooks
-- [ ] Arbitrage detection engine
-- [ ] Stake calculator
-- [ ] Paper trading mode
+```text
+Frontend
+    │
+    ▼
+Routes
+    │
+    ▼
+Controllers
+    │
+    ▼
+Services
+    │
+    ▼
+Odds API / Business Logic
+```
 
-### Phase 3 – Automation
-- [ ] Playwright browser automation
-- [ ] Automatic login
-- [ ] Automatic bet placement
-- [ ] Bet verification
-- [ ] Basic risk management
+### Routes
 
-### Phase 4 – Dashboard
-- [ ] Live arbitrage opportunities
-- [ ] Betting history
-- [ ] Profit tracking
-- [ ] Bot controls (Start / Stop)
+Define the application's API endpoints.
 
-### Phase 5 – Polish
-- [ ] Docker deployment
-- [ ] CI/CD pipeline
-- [ ] Improved logging
-- [ ] Notifications
-- [ ] Performance improvements
+Examples:
+
+* `/health`
+* `/odds`
+* `/arbitrage`
+
+Routes simply direct incoming requests to the appropriate controller.
 
 ---
 
-## Installation
+### Controllers
+
+Handle HTTP requests and responses.
+
+Responsibilities include:
+
+* Receiving requests
+* Reading parameters or request data
+* Calling the appropriate service
+* Returning JSON responses
+
+Controllers coordinate the request but contain very little business logic.
+
+---
+
+### Services
+
+Contain the application's business logic.
+
+Examples include:
+
+* Fetching odds from external APIs
+* Detecting arbitrage opportunities
+* Calculating optimal stake sizes
+* Placing bets
+* Managing bookmaker interactions
+
+Most of the project's functionality will be implemented within this layer.
+
+---
+
+### Config
+
+Stores application configuration such as:
+
+* Server port
+* API keys
+* Refresh intervals
+
+---
+
+### Utils
+
+Contains reusable helper functions shared across the application.
+
+Examples include:
+
+* Odds conversion
+* Stake calculations
+* Date formatting
+* General utility functions
+
+---
+
+# Roadmap
+
+## Development Roadmap
+
+### Phase 1 — Project Setup -- COMPLETE
+- Initialise GitHub repository
+- Set up backend (Node.js + Express)
+- Set up frontend (React + Vite)
+- Configure project structure
+- Install dependencies and development tools
+
+### Phase 2 — Backend Foundation -- COMPLETE
+- Configure Express server
+- Create routes, controllers and services
+- Add middleware and logging
+- Build initial API structure
+- Verify backend with development server
+
+### Phase 3 — Arbitrage Detection Engine
+- Build arbitrage calculation logic
+- Create calculation utilities
+- Develop arbitrage API endpoint
+- Validate requests and responses
+- Test with Postman
+- Add unit tests
+
+### Phase 4 — Sportsbook Integration
+- Connect to live odds sources
+- Standardise bookmaker data
+- Retrieve and compare odds
+- Feed live odds into the arbitrage engine
+
+### Phase 5 — Browser Automation
+- Integrate Playwright
+- Log in to supported sportsbooks
+- Navigate betting markets
+- Place bets automatically
+- Handle errors and confirmations
+
+### Phase 6 — Frontend Dashboard
+- Build React dashboard
+- Display live arbitrage opportunities
+- Show betting history and profit
+- Add bot controls and status monitoring
+
+### Phase 7 — Database & Persistence
+- Store betting history
+- Save arbitrage opportunities
+- Track profit and performance
+- Manage application settings
+
+### Phase 8 — Testing & Deployment
+- End-to-end testing
+- Improve error handling
+- Optimise performance
+- Prepare production deployment
+- Complete documentation
+
+---
+
+# Installation
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/sports-arb-bot.git
-cd sports-arb-bot
+git clone https://github.com/YOUR_USERNAME/sports-arbitrage-bot.git
+cd sports-arbitrage-bot
 ```
 
-Create a virtual environment:
+Install backend dependencies:
 
 ```bash
-python -m venv .venv
+cd backend
+npm install
 ```
 
-Activate the environment:
-
-**Windows**
+Install frontend dependencies:
 
 ```bash
-.venv\Scripts\activate
-```
-
-**macOS/Linux**
-
-```bash
-source .venv/bin/activate
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
+cd ../frontend
+npm install
 ```
 
 Run the backend:
 
 ```bash
-uvicorn backend.main:app --reload
+cd backend
+npm run dev
+```
+
+Run the frontend:
+
+```bash
+cd frontend
+npm run dev
 ```
 
 ---
 
-## Environment Variables
+# Environment Variables
 
-Create a `.env` file:
+Create a `.env` file inside the `backend` directory.
 
 ```env
-DATABASE_URL=
+PORT=3000
 
-BOOKMAKER_USERNAME=
-BOOKMAKER_PASSWORD=
-
-DISCORD_WEBHOOK=
-
-TELEGRAM_BOT_TOKEN=
-TELEGRAM_CHAT_ID=
+ODDS_API_KEY=
 
 HEADLESS=true
-
-LOG_LEVEL=INFO
 ```
+
+Additional environment variables for sportsbook credentials and notifications will be introduced in later phases.
 
 ---
 
-## Development
+# Project Goals
 
-Run tests:
+The MVP focuses on:
 
-```bash
-pytest
-```
-
-Format code:
-
-```bash
-black .
-```
-
-Lint:
-
-```bash
-ruff check .
-```
+* Supporting two sportsbooks
+* Detecting arbitrage opportunities in real time
+* Calculating optimal stake sizes
+* Providing a simple web dashboard
+* Building a clean and maintainable codebase that can be extended as new sportsbooks and features are added
 
 ---
 
-## Project Goals
-
-The initial version of the project focuses on:
-
-- Supporting **two sportsbooks**
-- Detecting arbitrage opportunities in real time
-- Automatically placing both bets using Playwright
-- Providing a simple web dashboard for monitoring opportunities
-- Building a clean, maintainable codebase that can be extended with additional sportsbooks
-
-Once the core workflow is stable, additional sportsbooks and features can be added without major architectural changes.
-
----
-
-## License
+# License
 
 This project is licensed under the MIT License.
