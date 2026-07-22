@@ -1,16 +1,43 @@
-function getOdds() {
-  return [
-    {
-      bookmaker: "Bet365",
-      home: 2.05,
-      away: 1.82,
-    },
-    {
-      bookmaker: "Pinnacle",
-      home: 2.12,
-      away: 1.78,
-    },
-  ];
+const axios = require("axios");
+
+const { SPORTSGAMEODDS } = require("../config");
+
+const { transformSGOapi } = require("../utils/helpers");
+
+async function getOdds() {
+
+    try {
+
+        const response = await axios.get(
+            `${SPORTSGAMEODDS.BASE_URL}/events`,
+            {
+                headers: {
+                    "X-API-Key": SPORTSGAMEODDS.API_KEY
+                },
+
+                params: {
+                    leagueID: "MLB",
+                    sportID: "BASEBALL",
+                    oddsAvailable: "true",
+                    oddsPresent: "true",
+                    limit: 5
+                }
+            }
+        );
+
+      const transformedEvents = response.data.data.map(transformSGOapi);
+
+      console.dir(transformedEvents[0].odds[0], { depth: null });
+
+      return transformedEvents;
+
+    } catch (error) {
+
+        console.log("SportsgameOdds API error:");
+        console.log(error.response?.data || error.message);
+
+        throw error;
+    }
 }
 
 module.exports = {

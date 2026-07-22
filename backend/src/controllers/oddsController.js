@@ -1,7 +1,22 @@
 const { getOdds } = require("../services/oddsService");
 
-function fetchOdds(req, res) {
-  res.json(getOdds());
+async function fetchOdds(req, res) {
+    try {
+
+        const odds = await getOdds();
+
+        console.log("ODDS RESPONSE:");
+        console.log(odds);
+
+        res.json(odds);
+
+    } catch(error) {
+
+        res.status(500).json({
+            message: error.message
+        });
+
+    }
 }
 
 module.exports = {

@@ -1,0 +1,24 @@
+### Valid request
+POST http://localhost:3000/arbitrage
+Content-Type: application/json
+
+{
+  "odds": [2.1, 1.9],
+  "bankroll": 100
+}
+
+### Missing bankroll
+POST http://localhost:3000/arbitrage
+Content-Type: application/json
+
+{
+  "odds": [2.1, 1.9]
+}
+
+### Missing odds
+POST http://localhost:3000/arbitrage
+Content-Type: application/json
+
+{
+  "bankroll": 100
+}
