@@ -12,7 +12,9 @@ function transformSGOapi(event) {
       odds: Object.values(event.odds)
       .filter(
         (odd) => 
-          odd.betTypeID === "ml" && odd.periodID === "game" && odd.bookOddsAvailable === true
+          odd.betTypeID === "ml" &&              // Moneyline bet type
+          odd.periodID === "game" &&             // Full game period (not 1st inning, 5-inning, etc.)
+          odd.bookOddsAvailable === true         // Odds available from bookmakers
       )
       .map((odd) => {
         return {
@@ -20,7 +22,9 @@ function transformSGOapi(event) {
           marketName: odd.marketName,
           sideID: odd.sideID,
 
+          // Transform bookmaker odds object into array of bookmaker entries
           bookmakers: Object.entries(odd.byBookmaker ?? {})
+            .filter(([bookmakerName, bookmakerData]) => bookmakerData.available === true)
             .map(([bookmakerName, bookmakerData]) => {
               return {
                 bookmaker: bookmakerName,
@@ -30,6 +34,7 @@ function transformSGOapi(event) {
             })
           };
         })
+      .filter(odd => odd.bookmakers.length > 0) // Filter out odds with no available bookmakers
     };
 }
 
