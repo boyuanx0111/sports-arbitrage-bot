@@ -1,0 +1,514 @@
+{
+  "cookies": [
+    {
+      "name": "X-AB",
+      "value": "76b8bd3944054e4b924ee9b3f1429c37",
+      "domain": "sc-static.net",
+      "path": "/scevent.min.js",
+      "expires": 1785226812.513796,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_GRECAPTCHA",
+      "value": "09AKhCRwjtytsK3M-3rPjwMsiqsVY3NmOHj7r7j6vNn42tA50n08q_JIXWHnrcdhlJFQMClKwx0jBjT7enQbu2-bk",
+      "domain": "www.google.com",
+      "path": "/recaptcha",
+      "expires": 1800692426.176037,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "device_id",
+      "value": "e8b02911-ae72-4ba7-b09a-e6ee22697035",
+      "domain": "www.unibet.co.uk",
+      "path": "/login-api",
+      "expires": 1819700426.504587,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "refresh_token",
+      "value": "eyJ0eXBlIjoia2luZHJlZDpjdGggIiwidmVyIjoxfQ==.Cr16xACUib4omT1wCkRX51D4Uu2rkS2U38jxKL6PwM0bfeItdvgWkGml7IVQjp0ws+nVKd4jUeF8cxQ8aX70ZTO5XgWnk/C0Be3Yq9pn5RFy4BN9AGrNUvjgzy7+Jws1IkfPSLnRMteRWZsFgew48LfAREnMShdLCWttRMBbLiY=.cda5a1814750ae75b6f3c8c0c113754f50aa434cc5ffc4709b14409339a4c0a7",
+      "domain": ".www.unibet.co.uk",
+      "path": "/login-api",
+      "expires": 1785226828.590185,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "USESSIONID",
+      "value": "4292125723E9A2F8DA143FFB8CDF041E",
+      "domain": "www.unibet.co.uk",
+      "path": "/onecms",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "INGRESSCOOKIE_APIGATEWAY",
+      "value": "7327bfd248d3e0e2ddbb9b32e877d2b7|cfa05ea48f7ba1e9a8f8d10007d08d5e",
+      "domain": "www.unibet.co.uk",
+      "path": "/",
+      "expires": 1785143998.344589,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "clientId",
+      "value": "polopoly_desktop",
+      "domain": ".www.unibet.co.uk",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "prefer-color-scheme",
+      "value": "light",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1816676404.623443,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "kwp-a-b-testing-fallback-id",
+      "value": "93f7fcb3-b681-42cb-a984-7d323381ef6a",
+      "domain": "www.unibet.co.uk",
+      "path": "/",
+      "expires": 1819700404,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_sp_ses.43c5",
+      "value": "*",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1785142229,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "sp",
+      "value": "3ac72f48-7cec-4c9d-9ad3-e6b112c37e94",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1816676429.88278,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "OptanonAlertBoxClosed",
+      "value": "2026-07-27T08:20:10.816Z",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1816676410,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "LPVID",
+      "value": "U4N2Y3NzNhMWJkNWE3MDky",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1816676410,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "LPSID-60451533",
+      "value": "BzNrCECgRQiKMIXcfN5eIw",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__adal_ses",
+      "value": "*",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1785142228,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__adal_ca",
+      "value": "so%3Ddirect%26me%3Dnone%26ca%3Ddirect%26co%3D%28not%2520set%29%26ke%3D%28not%2520set%29",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1800692412,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__adal_cw",
+      "value": "1785140412488",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1785745212,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_scid",
+      "value": "ubJ1kW8SUzsXFUjRIcUKVOjHMRge-afS",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1819354812,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_tguatd",
+      "value": "eyJzYyI6Ind3dy51bmliZXQuY28udWsiLCJmdHMiOiJ3d3cudW5pYmV0LmNvLnVrIn0=",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1785142228,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_tgpc",
+      "value": "2b304905-2e4e-47a9-a02e-2cab8833b671",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1816676428,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_tgidts",
+      "value": "eyJzaCI6ImQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlIiwiY2kiOiI0YTJlNzhmMi04NThmLTQ3NTItODRhNy1hMGU5YTIzM2Q5YzYiLCJzaSI6IjA1ZDY0MTBiLTdiZjQtNDRjMC04OWEwLWMzM2QzYzY3MWZjNSJ9",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1785142228,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_ga",
+      "value": "GA1.1.281723847.1785140413",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1819700412.823307,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "geid",
+      "value": "0f01000b-c25f-4cc5-9700-16686a6714bd",
+      "domain": ".trafficguard.ai",
+      "path": "/",
+      "expires": 1816676429.088117,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "IDE",
+      "value": "AHWqTUnQRDvJCeZURM8OrXiXrCJRNoq3qJsvZVutS5SkpoaK0hgvcnsWl54B0A_I",
+      "domain": ".doubleclick.net",
+      "path": "/",
+      "expires": 1818836414.56122,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "MUID",
+      "value": "00887A2B26C66F64030B6D8827A26EF6",
+      "domain": ".bing.com",
+      "path": "/",
+      "expires": 1818836414.903664,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "C",
+      "value": "1",
+      "domain": ".adform.net",
+      "path": "/",
+      "expires": 1787818815.468953,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_fbp",
+      "value": "fb.2.1785140415527.22630039766041980",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1792916428,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "uid",
+      "value": "1228539811358556482",
+      "domain": ".adform.net",
+      "path": "/",
+      "expires": 1790324430.160396,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "datadome",
+      "value": "EW~B1fv9aNzw0698lkEENJgiTcz7c282bQUvhlxn97sr7OCSR3P1Eq7dFkQ0UykEpImbdKtLUUINtJA6xSVOk7R1JxPfrAxJG9jkDhRIDOJUq5_HzSO4V2JRhwcNuXQf",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1816676427.070757,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "isReturningUser",
+      "value": "true",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1819700427.073953,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_gcl_au",
+      "value": "1.1.1311556829.1785140413.523484744.1785140417.1785140425.1790280215.1785140413.1785140428",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1792916413,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_ga_74P6RGRZ1V",
+      "value": "GS2.1.s1785140412$o1$g1$t1785140428$j44$l0$h0",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1819700428.58004,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "access_token",
+      "value": "sPW4LYILQFaXlC5lGtkkIQ:ogLslY0KSly5mnaTmMZCNA",
+      "domain": ".www.unibet.co.uk",
+      "path": "/",
+      "expires": 1785141328.59008,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_scid_r",
+      "value": "sjJ1kW8SUzsXFUjRIcUKVOjHMRge-afS7L0Xkw",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1819354828,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_tglksd",
+      "value": "eyJzIjoiMDVkNjQxMGItN2JmNC00NGMwLTg5YTAtYzMzZDNjNjcxZmM1Iiwic3QiOjE3ODUxNDA0MTI3NzQsInNvZCI6Ind3dy51bmliZXQuY28udWsiLCJzb2R0IjoxNzg1MTQwNDEyNzc0LCJzb2RzIjoiYyIsInNvZHN0IjoxNzg1MTQwNDI4NjIyfQ==",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1816676428,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "__adal_id",
+      "value": "0651d6de-b394-4428-970d-cc9e072f5eb5.1785140412.1.1785140429.1785140412.191067d1-4b86-42dd-9b8c-9a116005b0d1",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1819700428.628451,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_uetsid",
+      "value": "fdb32780899311f188bb11df1575dff0|1phdcwh|2|g83|1|2399",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1785226828,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_tgsid",
+      "value": "eyJscGQiOiJ7XCJscHVcIjpcImh0dHBzOi8vd3d3LnVuaWJldC5jby51ayUyRm15YWNjb3VudCUyRmxvZ2luXCIsXCJscHRcIjpcIlVuaWJldFwiLFwibHByXCI6XCJodHRwczovL3d3dy51bmliZXQuY28udWtcIn0iLCJwcyI6ImRkNGExZGNjLTNlZjUtNDY4Zi1iYmYxLTM5NWY1ZTFkZjYwMyIsInB2YyI6IjIiLCJzYyI6IjA1ZDY0MTBiLTdiZjQtNDRjMC04OWEwLWMzM2QzYzY3MWZjNTotMSIsImVjIjoiNCIsInB2IjoiMSIsInRpbSI6IjA1ZDY0MTBiLTdiZjQtNDRjMC04OWEwLWMzM2QzYzY3MWZjNToxNzg1MTQwNDE1ODU2OjEwIn0=",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1785142228,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "INGRESSCOOKIE_XNSAPIGATEWAY",
+      "value": "ae4b0683d873225f8a71c6f1d5c30c3c|1e8bd7e2a050f096bdda6a8d25645ecb",
+      "domain": "www.unibet.co.uk",
+      "path": "/",
+      "expires": 1785144028.786114,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "OptanonConsent",
+      "value": "isGpcEnabled=0&datestamp=Mon+Jul+27+2026+16%3A20%3A28+GMT%2B0800+(China+Standard+Time)&version=202602.1.0&browserGpcFlag=0&isIABGlobal=false&hosts=&genVendors=V2%3A0%2CV5%3A0%2CV4%3A0%2CV1%3A0%2CV3%3A0%2C&landingPath=NotLandingPage&groups=C0001%3A1%2CC0002%3A1%2CC0004%3A1%2CC0003%3A1&geolocation=GB%3BENG&AwaitingReconsent=false",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1816676428,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_sp_id.43c5",
+      "value": "b97cefd0-3b20-4d30-9f76-1df688f5de69.1785140405.1.1785140430..62a0bdec-ea48-4c32-b4e3-51468bd17c57..412ca159-f0f3-4d45-814c-fe0f7cad3baa.1785140405931.7",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1819700429.555857,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_uetvid",
+      "value": "fdb370d0899311f1924ea53eba97af87|10g7uil|1785140430726|2|1|bat.bing.com/p/insights/c/o",
+      "domain": ".unibet.co.uk",
+      "path": "/",
+      "expires": 1818836430,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "INGRESSCOOKIE_CMS",
+      "value": "c1c068ceb1622e35d8a28591fbbc3a97|52b57b1639bb8e648ac62eed802c09a2",
+      "domain": "www.unibet.co.uk",
+      "path": "/",
+      "expires": 1785151231.433456,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://www.unibet.co.uk",
+      "localStorage": [
+        {
+          "name": "u_sclid",
+          "value": "iAnTMJhn_wSblkjxSwVrBqQdn7dHTkOrubJ1kW8SUzsXFUjRIcUKVOjHMRge-afS"
+        },
+        {
+          "name": "adal_out_queue_adalyserTracker_get",
+          "value": "[]"
+        },
+        {
+          "name": "_uetvid_exp",
+          "value": "Sat, 21 Aug 2027 08:20:30 GMT"
+        },
+        {
+          "name": "snowplowOutQueue_snowplow_sp_post2.expires",
+          "value": "1848212429884"
+        },
+        {
+          "name": "_gcl_ls",
+          "value": "{\"schema\":\"gcl\",\"version\":1,\"gsid_dc\":{\"value\":{\"joinId\":\"Bhx0DZRk0uGcqgWsVBVbIWdyWikZ5FdB0A\",\"lastJoinedTimeMs\":1785140412555},\"expires\":1785140712555},\"gcl_ctr\":{\"value\":{\"value\":3,\"timeouts\":0,\"errors\":0,\"eopCount\":0,\"creationTimeMs\":1785140428459},\"expires\":1792916428459}}"
+        },
+        {
+          "name": "_uetsid",
+          "value": "fdb32780899311f188bb11df1575dff0|1phdcwh|2|g83|1|2399"
+        },
+        {
+          "name": "_grecaptcha",
+          "value": "09AKhCRwj-IxBQb5_UyqT4P8B3TCOrZbXSTt3mhTkBrYjiTOm8ON6zfPJdXSXZh_PrM2iQ0xVBWvMi42BCIMCTXU5Q3EuVsS6qUs1ObOJ-XwxFXHCLejltunq10g9NmEAg"
+        },
+        {
+          "name": "snowplowOutQueue_snowplow_sp_post2",
+          "value": "[]"
+        },
+        {
+          "name": "u_sclid_r",
+          "value": "kYnTMJhn_wSblkjxSwVrBqQdn7dHTkOrBv14RbIydZFvElM7FxVI0SHFClToxzEYHvmn0uy9F5M"
+        },
+        {
+          "name": "_uetsid_exp",
+          "value": "Tue, 28 Jul 2026 08:20:28 GMT"
+        },
+        {
+          "name": "KAF_LAST_REFRESHED_AT",
+          "value": "1785140428"
+        },
+        {
+          "name": "_uetvid",
+          "value": "fdb370d0899311f1924ea53eba97af87|10g7uil|1785140430726|2|1|bat.bing.com/p/insights/c/o"
+        },
+        {
+          "name": "session_sync_info",
+          "value": "{\"isAlive\":true,\"expIn\":6900,\"syncAgainIn\":300,\"xsTraceId\":\"7JFtF4444CIUO-bryohUa8vW2kptPVgZtbpR1IeSjPQ\",\"lifetime\":1,\"lastSyncAt\":1785140429}"
+        },
+        {
+          "name": "lpLastVisit-60451533",
+          "value": "1785140410945"
+        },
+        {
+          "name": "gbFeaturesCache",
+          "value": "[[\"https://growthbook-api.kindredext.net||sdk-WLLZENkKKryMjdTa\",{\"data\":{\"status\":200,\"features\":{\"winners_feed\":{\"defaultValue\":true,\"rules\":[{\"condition\":{\"brand\":\"32red\"},\"force\":false}]},\"kmf-hello-world\":{\"defaultValue\":true,\"rules\":[{\"coverage\":1,\"hashAttribute\":\"id\",\"fallbackAttribute\":\"fallbackId\",\"bucketVersion\":1,\"seed\":\"kmf-hello-world-test-experiment\",\"hashVersion\":2,\"variations\":[false,true],\"weights\":[0.5,0.5],\"key\":\"kmf-hello-world-test-experiment\",\"meta\":[{\"key\":\"0\",\"name\":\"Control\"},{\"key\":\"1\",\"name\":\"Variation 1\"}],\"phase\":\"0\",\"name\":\"kmf-hello-world\"}]},\"tournament_steps\":{\"defaultValue\":false,\"rules\":[{\"condition\":{\"$or\":[{\"brand\":\"unibet\",\"jurisdiction\":\"UK\",\"locale\":\"en_GB\"},{\"brand\":\"unibet\",\"jurisdiction\":\"MT\",\"locale\":\"en_GB\"},{\"brand\":\"unibet\",\"jurisdiction\":\"MT\",\"locale\":\"fi_FI\"},{\"brand\":\"unibet\",\"locale\":\"ro_RO\",\"jurisdiction\":\"RO\"}]},\"coverage\":1,\"hashAttribute\":\"id\",\"fallbackAttribute\":\"fallbackId\",\"seed\":\"6cceaa77-1a15-4167-a681-eff61aa4ab53\",\"hashVersion\":2,\"force\":true}]},\"pwa_ui_install_option\":{\"defaultValue\":false},\"web_deposit_and_play_widget\":{\"defaultValue\":false},\"kwp_new_visitor_page\":{\"defaultValue\":false},\"kwp_registration_grouping_progress_bar\":{\"defaultValue\":false,\"rules\":[{\"condition\":{\"fallbackId\":\"fourstepregistration_variation\"},\"force\":true},{\"condition\":{\"fallbackId\":\"normalregistration_control\"},\"force\":false}]},\"kwp_continue_playing_on_sports\":{\"defaultValue\":false},\"kwp_new_visitor_page_banner_player\":{\"defaultValue\":true},\"kwp_registration_comms_prefs_select_all\":{\"defaultValue\":false},\"kwp_start_page_login_screen\":{\"defaultValue\":false},\"kwp_product_topnav_multibrand\":{\"defaultValue\":false},\"web_play_for_real_popup\":{\"defaultValue\":false},\"kwp_slim_or_hidden_bonus_banner\":{\"defaultValue\":\"default\",\"rules\":[{\"condition\":{\"fallbackId\":\"force_banner_control\"},\"force\":\"default\"},{\"condition\":{\"fallbackId\":\"force_banner_slim\"},\"force\":\"slim\"},{\"condition\":{\"fallbackId\":\"force_banner_none\"},\"force\":\"none\"},{\"condition\":{\"brand\":\"unibet\",\"jurisdiction\":\"UK\",\"locale\":\"en_GB\"},\"coverage\":1,\"hashAttribute\":\"fallbackId\",\"disableStickyBucketing\":true,\"bucketVersion\":1,\"seed\":\"fb73fc6f-4e2f-401c-961b-7f3e4d7bdc4e\",\"hashVersion\":2,\"force\":\"slim\"}]},\"kwp_itsme_on_manual_step_registration\":{\"defaultValue\":false,\"rules\":[{\"condition\":{\"fallbackId\":\"force_itsme_combo_control\"},\"force\":false},{\"condition\":{\"fallbackId\":\"force_itsme_combo_variant\"},\"force\":true},{\"condition\":{\"$and\":[{\"jurisdiction\":\"BE\",\"locale\":{\"$in\":[\"nl_BE\",\"fr_BE\"]},\"brand\":{\"$in\":[\"unibet\",\"unibetgames\",\"unibetcasino\"]}},{\"applicationId\":{\"$in\":[\"polopoly\",\"browser\"]}}]},\"coverage\":1,\"hashAttribute\":\"fallbackId\",\"disableStickyBucketing\":true,\"seed\":\"8cc5804a-a2ac-4e1c-900d-e68d16492865\",\"hashVersion\":2,\"variations\":[false,true],\"weights\":[0.5,0.5],\"key\":\"kwp_itsme_on_manual_step_registration\",\"meta\":[{\"key\":\"0\",\"name\":\"Control\"},{\"key\":\"1\",\"name\":\"Variation 1\"}],\"phase\":\"0\",\"name\":\"eAuth & Manual reg UB-BE - Phase 2\"}]},\"kwp_deposit_limit_modal_be\":{\"defaultValue\":false,\"rules\":[{\"condition\":{\"fallbackId\":\"no_limit_modal_control\"},\"force\":false},{\"condition\":{\"fallbackId\":\"display_limit_modal_variation\"},\"force\":true}]},\"pwa_improved_instalation_journey\":{\"defaultValue\":false},\"web_casino_recommendations_mab\":{\"defaultValue\":false,\"rules\":[{\"condition\":{\"$or\":[{\"id\":124955585},{\"id\":128529773},{\"id\":125901995},{\"id\":127629157}]},\"force\":true},{\"condition\":{\"brand\":\"32red\",\"jurisdiction\":\"UK\",\"locale\":\"en_GB\"},\"coverage\":1,\"hashAttribute\":\"id\",\"bucketVersion\":2,\"seed\":\"4110d8ec-0673-4526-8766-a553096f6c9e\",\"hashVersion\":2,\"force\":true}]},\"kwp_welcome_offer_redesign\":{\"defaultValue\":false},\"kwp_idin_on_manual_step_one\":{\"defaultValue\":false},\"web_casino_lobby_sportsbook_widget\":{\"defaultValue\":false},\"kwp_low_balance_deposit_prompt\":{\"defaultValue\":false},\"web_prefilled_email_dropdown\":{\"defaultValue\":false},\"web_sticky_top_navigation_for_new_visitors\":{\"defaultValue\":\"default\"},\"web_promotion_player_on_sports_lobby\":{\"defaultValue\":false},\"web_mandatory_deposit_limit_journey\":{\"defaultValue\":false,\"rules\":[{\"condition\":{\"$and\":[{\"brand\":\"unibet\",\"jurisdiction\":\"NL\",\"locale\":\"nl_NL\"},{\"applicationId\":{\"$in\":[\"polopoly\",\"browser\"]}},{\"id\":{\"$ne\":\"NULL\"}}]},\"coverage\":1,\"hashAttribute\":\"id\",\"disableStickyBucketing\":true,\"seed\":\"cc5c3158-25b5-4a3a-bcd9-d271765b0a96\",\"hashVersion\":2,\"variations\":[false,true],\"weights\":[0.5,0.5],\"key\":\"web_mandatory_deposit_limit_journey\",\"meta\":[{\"key\":\"0\",\"name\":\"Control\"},{\"key\":\"1\",\"name\":\"Variation 1\"}],\"phase\":\"0\",\"name\":\"Mandatory deposit limit journey\"}]},\"web_optix_recommendations\":{\"defaultValue\":false},\"kwp_pnp_registration\":{\"defaultValue\":false,\"rules\":[{\"condition\":{\"$and\":[{\"brand\":\"32red\",\"jurisdiction\":\"UK\",\"locale\":\"en_GB\"},{\"applicationId\":{\"$in\":[\"polopoly\",\"browser\"]}},{\"id\":{\"$exists\":false}}]},\"coverage\":1,\"hashAttribute\":\"fallbackId\",\"disableStickyBucketing\":true,\"seed\":\"6deac59a-3aa1-41c8-92a4-b50b61e20f7a\",\"hashVersion\":2,\"variations\":[false,true],\"weights\":[0.5,0.5],\"key\":\"kwp_pnp_registration\",\"meta\":[{\"key\":\"0\",\"name\":\"Control\"},{\"key\":\"1\",\"name\":\"Variation 1\"}],\"phase\":\"0\",\"name\":\"Trustly PNP UK - Phase 1.5\"}]},\"kwp_home_page_navigation_clicks\":{\"defaultValue\":false},\"ios_sports_nano_cashier_enabled\":{\"defaultValue\":false,\"rules\":[{\"coverage\":1,\"hashAttribute\":\"id\",\"bucketVersion\":1,\"seed\":\"235a23cc-55a8-4186-b1c0-9b49ce56bd60\",\"hashVersion\":2,\"variations\":[false,true],\"weights\":[0.5,0.5],\"key\":\"ios_sports_nano_cashier_enabled\",\"meta\":[{\"key\":\"0\",\"name\":\"Control\"},{\"key\":\"1\",\"name\":\"Variation 1\"}],\"phase\":\"0\",\"name\":\"IOS Sports Nano Cashier\"}]}},\"experiments\":[],\"dateUpdated\":\"2026-07-24T08:03:11.743Z\"},\"version\":\"2026-07-24T08:03:11.743Z\",\"staleAt\":\"2026-07-27T08:21:28.371Z\",\"sse\":false}]]"
+        }
+      ]
+    },
+    {
+      "origin": "https://www.google.com",
+      "localStorage": [
+        {
+          "name": "rc::a",
+          "value": "MWMzbzhqMWwzNmpvYQ=="
+        },
+        {
+          "name": "rc::f",
+          "value": "0aALJPfmmoJRlzjEZt71aPWsrInHVl0b5ZUHfBtQfC4LvewHkd3-MFNQ-dOhvwg6iNjUThVUo"
+        }
+      ]
+    }
+  ]
+}
