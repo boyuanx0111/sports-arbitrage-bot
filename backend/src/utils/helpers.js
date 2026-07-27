@@ -38,6 +38,8 @@ function transformSGOapi(event) {
     };
 }
 
+// I think i still need to convert the data into the format that is specified in the standardOddsFormat
+
 module.exports = {
   transformSGOapi
 };
