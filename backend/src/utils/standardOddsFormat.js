@@ -7,6 +7,14 @@ function createStandardOdds(eventID, bookmaker, marketType){
         // Will add those later only if necessary
         bookmaker: bookmaker,  
         marketType: marketType, // What is actually being bet on (e.g. over/under, winner, goals scored)
+
+        event_metadata:{
+            homeTeam: "",
+            awayTeam: "",
+            sport: "",
+            league: "",
+            startTime: ""},
+        // Metadata - could be useful for displaying, debugging, filtering
         outcomes: []
     };
 // EventID MUST uniquely identify the event/match - not just the match but for example if a bet on a player is made

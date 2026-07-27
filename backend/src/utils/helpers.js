@@ -1,47 +1,49 @@
+const {validateOdds,
+  validateBankroll} = require("./validation.js");
+const {createStandardOdds,
+  addOutcome,
+  convertAmericanOddToDecimal} = require("./standardOddsFormat.js");
+
 function transformSGOapi(event) {
-    return {
-      eventId: event.eventID,
-      sport: event.sportID,
-      league: event.leagueID,
+  const standardOddsManyBookmakers = new Map();
+  const event_metadata = {
+    homeTeam: event.teams.home.names.long,
+    awayTeam: event.teams.away.names.long,
+    sport: event.sportID,
+    league: event.leagueID,
+    startTime: event.status.startsAt
+  };
 
-      homeTeam: event.teams.home.names.long,
-      awayTeam: event.teams.away.names.long,
-
-      startTime: event.status.startsAt,
-
-      odds: Object.values(event.odds)
-      .filter(
+  const relevantOdds = Object.values(event.odds).filter( // Odds for relevant outcomes of ONE event
         (odd) => 
           odd.betTypeID === "ml" &&              // Moneyline bet type
           odd.periodID === "game" &&             // Full game period (not 1st inning, 5-inning, etc.)
           odd.bookOddsAvailable === true         // Odds available from bookmakers
-      )
-      .map((odd) => {
-        return {
-          oddID: odd.oddID,
-          marketName: odd.marketName,
-          sideID: odd.sideID,
+      );
+    relevantOdds.forEach((odd) => {
+      Object.entries(odd.byBookmaker ?? {}).forEach(([bookmakerName, bookmakerData]) => {
+        // As entries returns the key as the 0th index, value as 1st index
+        if (!bookmakerData.available) return;
+        const eventBookmakerKey = `${event.eventID}_${bookmakerName}-ml`;
+        let standardOdds = standardOddsManyBookmakers.get(eventBookmakerKey);
+        if (!standardOdds) {
+          standardOdds = createStandardOdds(event.eventID, bookmakerName, "ml");
+          standardOdds.event_metadata = event_metadata;
+          standardOddsManyBookmakers.set(eventBookmakerKey, standardOdds);
+        }
+      
+        addOutcome(standardOdds, odd.sideID, convertAmericanOddToDecimal(bookmakerData.odds));
+      });
+    });
 
-          // Transform bookmaker odds object into array of bookmaker entries
-          bookmakers: Object.entries(odd.byBookmaker ?? {})
-            .filter(([bookmakerName, bookmakerData]) => bookmakerData.available === true)
-            .map(([bookmakerName, bookmakerData]) => {
-              return {
-                bookmaker: bookmakerName,
-                odds: bookmakerData.odds,
-                available: bookmakerData.available
-              };
-            })
-          };
-        })
-      .filter(odd => odd.bookmakers.length > 0) // Filter out odds with no available bookmakers
-    };
+    return Array.from(standardOddsManyBookmakers.values());
 }
 
-// I think i still need to convert the data into the format that is specified in the standardOddsFormat
+
 
 module.exports = {
   transformSGOapi
 };
 
 //small reusable helper functions
+// This function requires some testing
