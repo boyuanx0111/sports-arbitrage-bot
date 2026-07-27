@@ -1,27 +1,22 @@
 const { chromium } = require("playwright");
-const path = require("path");
-
-const storageState = path.join(
-    __dirname,
-    "../sessions/storage/unibet.json"
-);
 
 async function launchUnibet() {
+    const context = await chromium.launchPersistentContext(
+        "src/automation/profiles/unibet",
+        {
+            headless: false
+        }
+    );
 
-    const browser = await chromium.launch({
-        headless: false
-    });
+    let page = context.pages()[0];
 
-    const context = await browser.newContext({
-        storageState
-    });
-
-    const page = await context.newPage();
+    if (!page) {
+        page = await context.newPage();
+    }
 
     await page.goto("https://www.unibet.co.uk");
 
     return {
-        browser,
         context,
         page
     };
