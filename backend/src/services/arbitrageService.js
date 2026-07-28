@@ -1,3 +1,8 @@
+const {
+    calculateStake,
+    calculateGuaranteedProfit
+} = require('../utils/arbitrageMath');
+
 function calculateArbitrage(odds, bankroll) {
   if (!Array.isArray(odds) || odds.length < 2) {
     throw new Error("Invalid odds array, must contain at least two odds")
@@ -61,7 +66,41 @@ function calculateIsArbitrage(odds) {
   return isArbitrage;
 }
 
+function findArbitrageOpportunities(transformedOdds, bankroll) {
+  // transformedOdds is an array of standard odds objects, each representing a bookmaker's odds for a specific event.
+  // Maybe create a new function to group events by ID and bet type
+  const bestOdds = {};
+  for (const standardOdds of transformedOdds){
+    for (const outcome of standardOdds.outcomes) {
+      if (!bestOdds[outcome.outcome]){
+        bestOdds[outcome.outcome] = {odds: outcome.odds, bookmaker: standardOdds.bookmaker};
+      } else{
+        if (bestOdds[outcome.outcome].odds < outcome.odds){
+          bestOdds[outcome.outcome] = {odds: outcome.odds, bookmaker: standardOdds.bookmaker};
+        };
+      };
+    };
+  };
+  const odds = Object.values(bestOdds).map((odd) => odd.odds);
+  const isArbitrage = calculateIsArbitrage(odds)
+  if (isArbitrage){
+    return {
+      eventID: transformedOdds[0].eventID,
+      marketType: transformedOdds[0].marketType,
+      isArbitrage: true,
+      bestOdds: bestOdds,
+      
+      stakes:
+        calculateStake(bankroll, odds),
+      guaranteedProfit: calculateGuaranteedProfit(bankroll, odds),
+    };
+  } else {
+    return false
+  };
+};
+
 module.exports = {
   calculateArbitrage,
-  calculateIsArbitrage
+  calculateIsArbitrage,
+  findArbitrageOpportunities
 };
