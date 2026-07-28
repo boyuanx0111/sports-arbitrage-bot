@@ -9,3 +9,5 @@ async function test() {
 }
 
 test();
+
+// node src/automation/tests/unibet-profile-test.js
