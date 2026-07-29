@@ -28,16 +28,14 @@ async function getOdds() {
         // Transform raw API response into standardized format (extracts event details and filters moneyline odds)
         const transformedEvents = response.data.data.map(transformSGOapi);
 
-        // Log first odds object with full depth to inspect structure
-        console.dir(transformedEvents[0].odds[0], { depth: null });
-
-        return transformedEvents;
-
+    
+        return [transformedEvents[0], // All bookmaker odds for one singular event (first event)
+            transformedEvents[0][0].outcomes] // First bookmakers odds for the first event
+        // To inspect the data must alter the response of this function as this is sent as a json response to the website
     } catch (error) {
 
         console.log("SportsgameOdds API error:");
         console.log(error.response?.data || error.message);
-
         throw error;
     }
 }
