@@ -4,6 +4,10 @@ const { SPORTSGAMEODDS } = require("../config");
 
 const { transformSGOapi } = require("../utils/helpers");
 
+const {calculateArbitrage,
+  calculateIsArbitrage,
+  findArbitrageOpportunities} = require("./arbitrageService")
+
 async function getOdds() {
 
     try {
@@ -27,10 +31,20 @@ async function getOdds() {
 
         // Transform raw API response into standardized format (extracts event details and filters moneyline odds)
         const transformedEvents = response.data.data.map(transformSGOapi);
-
-    
-        return [transformedEvents[0], // All bookmaker odds for one singular event (first event)
-            transformedEvents[0][0].outcomes] // First bookmakers odds for the first event
+        const arbitrageOppurtunities = [];
+        for (const transformedEventList of transformedEvents) {
+            arbitrageOppurtunities.push(findArbitrageOpportunities(transformedEventList, 100));
+        }
+        let totalProfit = 0;
+        for (const arbitrageOppurtunity of arbitrageOppurtunities) {
+            if (arbitrageOppurtunity && arbitrageOppurtunity.guaranteedProfit != null) {
+                totalProfit += arbitrageOppurtunity.guaranteedProfit;
+            }
+        }
+        return {
+            arbitrageOppurtunities, // Returns arbitrage opportunities as they are returned from the function
+            totalProfit,    // Also returned the total profit across all the events
+        };
         // To inspect the data must alter the response of this function as this is sent as a json response to the website
     } catch (error) {
 

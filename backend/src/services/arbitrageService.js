@@ -10,13 +10,14 @@ function calculateArbitrage(odds, bankroll) {
   if (typeof bankroll !== "number" || bankroll <= 0){
     throw new Error("Bankroll must be a positive number")
   }
-  for (const odd of odds){
-    if (Number.isFinite(odd) || odd <= 1 || odd >= 100 || typeof odd !== "number") { 
-      throw new Error("Expecting valid, non-american odds")
+  for (const odd of odds) {
+    if (typeof odd !== "number" || !Number.isFinite(odd) || odd <= 1 || odd >= 100) {
+      console.error("Invalid odd detected in calculateArbitrage:", { odd, odds });
+      throw new Error("Expecting valid, non-american odds");
     }
   }
   // Brian if you reading this make sure the odds that come in here are decimal format, and at least two
-  // Realisitcally its always 2 but sometimes 3 for home/away/draw.
+  // Realistically its always 2 but sometimes 3 for home/away/draw.
 
   const impliedProbabilities = odds.map((odd) => 1 / odd);
   const totalImpliedProbability = impliedProbabilities.reduce((sum, p) => sum + p, 0);
@@ -48,9 +49,10 @@ function calculateIsArbitrage(odds) {
     if (!Array.isArray(odds) || odds.length < 2) {
     throw new Error("Invalid odds array, must contain at least two odds")
   }
-  for (const odd of odds){
-    if (Number.isFinite(odd) || odd <= 1 || odd >= 100 || typeof odd !== "number") { 
-      throw new Error("Expecting valid, non-american odds")
+  for (const odd of odds) {
+    if (typeof odd !== "number" || !Number.isFinite(odd) || odd <= 1 || odd >= 100) {
+      console.error("Invalid odd detected in calculateIsArbitrage:", { odd, odds });
+      throw new Error("Expecting valid, non-american odds");
     }
   }
 
