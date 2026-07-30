@@ -10,7 +10,7 @@ async function getBrowserContext(bookmaker) {
     const profilePath = `src/automation/profiles/${bookmaker}`;
 
     const context = await chromium.launchPersistentContext(profilePath, {
-        headless: false
+        headless: process.env.HEADLESS === "true",
     });
 
     contexts[bookmaker] = context;

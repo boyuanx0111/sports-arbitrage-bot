@@ -24,7 +24,7 @@ async function getOdds() {
                     sportID: "BASEBALL",
                     oddsAvailable: "true",
                     oddsPresent: "true",
-                    limit: 5
+                    limit: 20
                 }
             }
         );
@@ -33,7 +33,10 @@ async function getOdds() {
         const transformedEvents = response.data.data.map(transformSGOapi);
         const arbitrageOppurtunities = [];
         for (const transformedEventList of transformedEvents) {
-            arbitrageOppurtunities.push(findArbitrageOpportunities(transformedEventList, 100));
+          if (transformedEventList.length === 0) {
+            continue;
+          }
+          arbitrageOppurtunities.push(findArbitrageOpportunities(transformedEventList, 100));
         }
         let totalProfit = 0;
         for (const arbitrageOppurtunity of arbitrageOppurtunities) {

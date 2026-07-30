@@ -1,6 +1,3 @@
-2026/07/28-22:36:14.527 ffbc Reusing MANIFEST C:\Users\asus\sports-arb-bot\sports-arbitrage-bot\backend\src\automation\profiles\unibet\Default\Session Storage/MANIFEST-000001
-2026/07/28-22:36:14.539 ffbc Recovering log #6
-2026/07/28-22:36:14.545 ffbc Reusing old log C:\Users\asus\sports-arb-bot\sports-arbitrage-bot\backend\src\automation\profiles\unibet\Default\Session Storage/000006.log 
-2026/07/28-22:36:24.339 d28 Level-0 table #10: started
-2026/07/28-22:36:24.349 d28 Level-0 table #10: 19892 bytes OK
-2026/07/28-22:36:24.355 d28 Delete type=0 #6
+2026/07/29-23:03:23.649 3864 Reusing MANIFEST C:\Users\asus\sports-arb-bot\sports-arbitrage-bot\backend\src\automation\profiles\unibet\Default\Session Storage/MANIFEST-000001
+2026/07/29-23:03:23.671 3864 Recovering log #12
+2026/07/29-23:03:23.678 3864 Reusing old log C:\Users\asus\sports-arb-bot\sports-arbitrage-bot\backend\src\automation\profiles\unibet\Default\Session Storage/000012.log 

@@ -16,7 +16,7 @@ function transformSGOapi(event) {
 
   const relevantOdds = Object.values(event.odds).filter( // Odds for relevant outcomes of ONE event
         (odd) => 
-          odd.betTypeID === "ml" &&              // Moneyline bet type
+          odd.betTypeID === "ml" &&              // moneyline bet type
           odd.periodID === "game" &&             // Full game period (not 1st inning, 5-inning, etc.)
           odd.bookOddsAvailable === true         // Odds available from bookmakers
       );
