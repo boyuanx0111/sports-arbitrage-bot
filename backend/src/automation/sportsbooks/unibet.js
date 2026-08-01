@@ -46,8 +46,30 @@ async function selectEvent(page, event) {
 
 }
 
+async function placeBet(opportunity) {
+    const { page } = await launchUnibet();
+
+    const event = {
+        homeTeam: opportunity.homeTeam,
+        awayTeam: opportunity.awayTeam,
+        //time might not be same format !
+        time: opportunity.startTime
+    };
+
+    await search(
+        page,
+        `${event.homeTeam}`
+    );
+
+    await selectEvent(
+        page,
+        event
+    );
+}
+
 module.exports = {
     launchUnibet,
     search,
-    selectEvent 
+    selectEvent,
+    placeBet
 };

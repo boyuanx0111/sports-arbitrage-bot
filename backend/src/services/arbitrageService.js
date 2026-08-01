@@ -88,12 +88,14 @@ function findArbitrageOpportunities(transformedOdds, bankroll) {
   if (isArbitrage){
     return {
       eventID: transformedOdds[0].eventID,
+      homeTeam: transformedOdds[0].homeTeam,
+      awayTeam: transformedOdds[0].awayTeam,
+      startTime: transformedOdds[0].startTime,
       marketType: transformedOdds[0].marketType,
       isArbitrage: true,
       bestOdds: bestOdds,
       
-      stakes:
-        calculateStake(bankroll, odds),
+      stakes: calculateStake(bankroll, odds),
       guaranteedProfit: calculateGuaranteedProfit(bankroll, odds),
     };
   } else {
