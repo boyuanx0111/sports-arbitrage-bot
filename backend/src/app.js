@@ -6,6 +6,8 @@ const oddsRoutes = require("./routes/odds");
 
 const arbitrageRoutes = require("./routes/arbitrage");
 
+const debugRoutes = require("./routes/debugRoutes");
+
 const app = express();
 
 // Parse incoming JSON request bodies.
@@ -15,5 +17,6 @@ app.use(express.json());
 app.use("/health", healthRoutes);
 app.use("/odds", oddsRoutes);
 app.use("/arbitrage", arbitrageRoutes);
+app.use("/debug", debugRoutes);
 
 module.exports = app;

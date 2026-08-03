@@ -90,6 +90,22 @@ async function getOdds() {
                 }
             }
 
-            module.exports = {
-                getOdds,
-            };
+async function getActiveLeagues() {
+    const response = await axios.get(`${SPORTSGAMEODDS.BASE_URL}/leagues/`, {
+        headers: {
+            "X-API-Key": SPORTSGAMEODDS.API_KEY
+        }
+    });
+    const supportedLeagues = SPORTSGAMEODDS.LEAGUES.map(league => league.leagueID);
+    const leagues = response.data.data;
+
+    const activeLeagues = leagues.filter(league => league.enabled);
+    const supportedActiveLeagues = activeLeagues.filter(league => supportedLeagues.includes(league.leagueID));
+
+    return {activeLeagues, supportedActiveLeagues};
+}
+
+module.exports = {
+    getOdds,
+    getActiveLeagues
+};
