@@ -27,7 +27,7 @@ async function getOdds() {
                             sportID,
                             oddsAvailable: "true",
                             oddsPresent: "true",
-                            limit: 20
+                            limit: 15
                         }
                     }
                 )
