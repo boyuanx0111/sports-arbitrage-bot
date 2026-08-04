@@ -1,5 +1,5 @@
-// controllers/debugController.js
-
+const testCases = require("../debug/testData/arbTestData");
+const { findArbitrageOpportunities } = require("../services/arbitrageService");
 const { getActiveLeagues } = require("../services/oddsService");
 
 async function activeLeagues(req, res) {
@@ -19,6 +19,24 @@ async function activeLeagues(req, res) {
     }
 }
 
+async function arbitrageTest(req, res){
+    try {
+        const results = [];
+        for (const testCase of testCases) {
+            results.push(findArbitrageOpportunities(testCase, 100));
+        }
+        res.json({
+            results: results,
+            expectedResults: "First two should be true. 3rd one should alert that under 2% and last 3 all fail"
+    });
+    } catch (error) {a
+        res.status(500),json({
+            error: "Failed to run arbitrage test"
+        });
+    }
+}
+
 module.exports = {
-    activeLeagues
+    activeLeagues,
+    arbitrageTest
 };
