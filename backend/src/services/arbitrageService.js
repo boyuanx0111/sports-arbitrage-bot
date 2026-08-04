@@ -85,7 +85,8 @@ function findArbitrageOpportunities(transformedOdds, bankroll) {
   };
   const odds = Object.values(bestOdds).map((odd) => odd.odds);
   const isArbitrage = calculateIsArbitrage(odds)
-  if (isArbitrage){
+  const guaranteedProfit = calculateGuaranteedProfit(bankroll, odds);
+  if (isArbitrage && guaranteedProfit/bankroll >= 0.02){
     return {
       eventID: transformedOdds[0].eventID,
       homeTeam: transformedOdds[0].homeTeam,
@@ -96,12 +97,22 @@ function findArbitrageOpportunities(transformedOdds, bankroll) {
       bestOdds: bestOdds,
       
       stakes: calculateStake(bankroll, odds),
-      guaranteedProfit: calculateGuaranteedProfit(bankroll, odds),
+      guaranteedProfit: guaranteedProfit,
+    };
+  } else if (isArbitrage && guaranteedProfit/bankroll < 0.02){
+    return {
+      isArbitrage: true,
+      alert: "Arbitrage detected but profit not enough, less than 2%",
+      eventID: transformedOdds[0].eventID,
+      homeTeam: transformedOdds[0].homeTeam,
+      awayTeam: transformedOdds[0].awayTeam,
+      guaranteedProfit: 0
     };
   } else {
-    return false
+    return false;
   };
-};
+  };
+
 
 module.exports = {
   calculateArbitrage,
