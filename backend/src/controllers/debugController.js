@@ -29,8 +29,8 @@ async function arbitrageTest(req, res){
             results: results,
             expectedResults: "First two should be true. 3rd one should alert that under 2% and last 3 all fail"
     });
-    } catch (error) {a
-        res.status(500),json({
+    } catch (error) {
+        res.status(500).json({
             error: "Failed to run arbitrage test"
         });
     }

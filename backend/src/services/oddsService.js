@@ -27,7 +27,7 @@ async function getOdds() {
                             sportID,
                             oddsAvailable: "true",
                             oddsPresent: "true",
-                            limit: 15
+                            limit: 5
                         }
                     }
                 )
@@ -58,15 +58,35 @@ async function getOdds() {
                     continue;
                 }
 
-                const arbitrageOppurtunity = findArbitrageOpportunities(transformedEventList, 100);
-                arbitrageOppurtunities.push(arbitrageOppurtunity);
-                
-                //link to automationManager.js to execute the opportunity
-                if (arbitrageOppurtunity && arbitrageOppurtunity.guaranteedProfit != null){
-                    leagueProfit += arbitrageOppurtunity.guaranteedProfit;
-                    totalProfit += arbitrageOppurtunity.guaranteedProfit;
+                //split by market type
+                const markets = {};
 
-                    await executeOpportunity(arbitrageOppurtunity);
+                for (const standardOdds of transformedEventList) {
+                    if (!markets[standardOdds.marketType]) {
+                        markets[standardOdds.marketType] = [];
+                    }
+
+                    markets[standardOdds.marketType].push(standardOdds);
+                }
+
+                for (const marketOdds of Object.values(markets)) {
+
+                    const arbitrageOppurtunity =
+                        findArbitrageOpportunities(marketOdds, 100);
+
+                    arbitrageOppurtunities.push(arbitrageOppurtunity);
+                    
+                    //link to automationManager.js to execute the opportunity
+                    if (
+                        arbitrageOppurtunity &&
+                        arbitrageOppurtunity.guaranteedProfit != null
+                    ) {
+                        leagueProfit += arbitrageOppurtunity.guaranteedProfit;
+                        totalProfit += arbitrageOppurtunity.guaranteedProfit;
+                        
+                        //link to automation, commented out for now because only ML supported
+                        //await executeOpportunity(arbitrageOppurtunity);
+                    }
                 }
 
                 arbitrageByLeague[leagueID] = {
@@ -75,20 +95,20 @@ async function getOdds() {
                     arbitrageOppurtunities
                 };
             }
-        }    
+        }
 
         return {
-                        leagues: arbitrageByLeague, // Returns the arb events by league
-                        totalProfit,    // Also returned the total profit across all the events
-                    };
-                    // To inspect the data must alter the response of this function as this is sent as a json response to the website
-                } catch (error) {
+            leagues: arbitrageByLeague, // Returns the arb events by league
+            totalProfit,    // Also returned the total profit across all the events
+        };
+        // To inspect the data must alter the response of this function as this is sent as a json response to the website
+    } catch (error) {
 
-                    console.log("SportsgameOdds API error:");
-                    console.log(error.response?.data || error.message);
-                    throw error;
-                }
-            }
+        console.log("SportsgameOdds API error:");
+        console.log(error.response?.data || error.message);
+        throw error;
+    }
+}
 
 async function getActiveLeagues() {
     const response = await axios.get(`${SPORTSGAMEODDS.BASE_URL}/leagues/`, {
@@ -102,7 +122,7 @@ async function getActiveLeagues() {
     const activeLeagues = leagues.filter(league => league.enabled);
     const supportedActiveLeagues = activeLeagues.filter(league => supportedLeagues.includes(league.leagueID));
 
-    return {activeLeagues, supportedActiveLeagues};
+    return { activeLeagues, supportedActiveLeagues };
 }
 
 module.exports = {

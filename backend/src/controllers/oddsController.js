@@ -12,6 +12,9 @@ async function fetchOdds(req, res) {
 
     } catch(error) {
 
+        console.error(error);
+        console.error(error.stack);
+
         res.status(500).json({
             message: error.message
         });

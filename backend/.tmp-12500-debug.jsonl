@@ -1,0 +1,1010 @@
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-ANDRES_CHAPARRO_1_MLB-game-ou-over",
+    "opposingOddID": "batting_triples-ANDRES_CHAPARRO_1_MLB-game-ou-under",
+    "marketName": "Andres Chaparro Triples Over/Under",
+    "statID": "batting_triples",
+    "statEntityID": "ANDRES_CHAPARRO_1_MLB",
+    "periodID": "game",
+    "betTypeID": "ou",
+    "sideID": "over",
+    "playerID": "ANDRES_CHAPARRO_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": true,
+    "fairOdds": "+2199",
+    "bookOdds": "+4098",
+    "fairOverUnder": "0.5",
+    "bookOverUnder": "0.5",
+    "openFairOdds": "+6600",
+    "openBookOdds": "+12500",
+    "openFairOverUnder": "0.5",
+    "openBookOverUnder": "0.5",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "fanduel": {
+        "odds": "+12500",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:33.000Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597023237&selectionId=72608966"
+      },
+      "draftkings": {
+        "odds": "+4200",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:10.000Z",
+        "available": true
+      }
+    }
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "overUnder": "0.5",
+    "lastUpdatedAt": "2026-08-04T17:05:33.000Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597023237&selectionId=72608966"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-ANDRES_CHAPARRO_1_MLB-game-yn-yes",
+    "opposingOddID": "batting_triples-ANDRES_CHAPARRO_1_MLB-game-yn-no",
+    "marketName": "Andres Chaparro Any Triples Yes/No",
+    "statID": "batting_triples",
+    "statEntityID": "ANDRES_CHAPARRO_1_MLB",
+    "periodID": "game",
+    "betTypeID": "yn",
+    "sideID": "yes",
+    "playerID": "ANDRES_CHAPARRO_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": false,
+    "bookOdds": "+4098",
+    "openBookOdds": "+12500",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "fanduel": {
+        "odds": "+12500",
+        "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179578047&selectionId=72608966"
+      },
+      "draftkings": {
+        "odds": "+4200",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "lastUpdatedAt": "2026-08-04T17:05:10.000Z",
+        "available": true
+      }
+    },
+    "fairOdds": "+256",
+    "openFairOdds": "+256"
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179578047&selectionId=72608966"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-FRANCISCO_ALVAREZ_1_MLB-game-yn-yes",
+    "opposingOddID": "batting_triples-FRANCISCO_ALVAREZ_1_MLB-game-yn-no",
+    "marketName": "Francisco Alvarez Any Triples Yes/No",
+    "statID": "batting_triples",
+    "statEntityID": "FRANCISCO_ALVAREZ_1_MLB",
+    "periodID": "game",
+    "betTypeID": "yn",
+    "sideID": "yes",
+    "playerID": "FRANCISCO_ALVAREZ_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": false,
+    "bookOdds": "+5226",
+    "openBookOdds": "+12500",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "fanduel": {
+        "odds": "+12500",
+        "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179577405&selectionId=48952302"
+      },
+      "draftkings": {
+        "odds": "+3700",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "lastUpdatedAt": "2026-08-04T17:05:06.000Z",
+        "available": true
+      }
+    },
+    "fairOdds": "+254",
+    "openFairOdds": "+254"
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179577405&selectionId=48952302"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-LUIS_TORRENS_1_MLB-game-yn-yes",
+    "opposingOddID": "batting_triples-LUIS_TORRENS_1_MLB-game-yn-no",
+    "marketName": "Luis Torrens Any Triples Yes/No",
+    "statID": "batting_triples",
+    "statEntityID": "LUIS_TORRENS_1_MLB",
+    "periodID": "game",
+    "betTypeID": "yn",
+    "sideID": "yes",
+    "playerID": "LUIS_TORRENS_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": false,
+    "bookOdds": "+3898",
+    "openBookOdds": "+10000",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "fanduel": {
+        "odds": "+12500",
+        "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179577405&selectionId=26177956"
+      },
+      "draftkings": {
+        "odds": "+3800",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "lastUpdatedAt": "2026-08-04T17:05:06.000Z",
+        "available": true
+      }
+    }
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179577405&selectionId=26177956"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-FRANCISCO_ALVAREZ_1_MLB-game-ou-over",
+    "opposingOddID": "batting_triples-FRANCISCO_ALVAREZ_1_MLB-game-ou-under",
+    "marketName": "Francisco Alvarez Triples Over/Under",
+    "statID": "batting_triples",
+    "statEntityID": "FRANCISCO_ALVAREZ_1_MLB",
+    "periodID": "game",
+    "betTypeID": "ou",
+    "sideID": "over",
+    "playerID": "FRANCISCO_ALVAREZ_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": true,
+    "fairOdds": "+2790",
+    "bookOdds": "+5226",
+    "fairOverUnder": "0.5",
+    "bookOverUnder": "0.5",
+    "openFairOdds": "+6600",
+    "openBookOdds": "+12500",
+    "openFairOverUnder": "0.5",
+    "openBookOverUnder": "0.5",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "fanduel": {
+        "odds": "+12500",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:12.000Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597022235&selectionId=48952302"
+      },
+      "draftkings": {
+        "odds": "+3700",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:06.000Z",
+        "available": true
+      }
+    }
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "overUnder": "0.5",
+    "lastUpdatedAt": "2026-08-04T17:05:12.000Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597022235&selectionId=48952302"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-LUIS_TORRENS_1_MLB-game-ou-over",
+    "opposingOddID": "batting_triples-LUIS_TORRENS_1_MLB-game-ou-under",
+    "marketName": "Luis Torrens Triples Over/Under",
+    "statID": "batting_triples",
+    "statEntityID": "LUIS_TORRENS_1_MLB",
+    "periodID": "game",
+    "betTypeID": "ou",
+    "sideID": "over",
+    "playerID": "LUIS_TORRENS_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": true,
+    "fairOdds": "+2094",
+    "bookOdds": "+3898",
+    "fairOverUnder": "0.5",
+    "bookOverUnder": "0.5",
+    "openFairOdds": "+5290",
+    "openBookOdds": "+10000",
+    "openFairOverUnder": "0.5",
+    "openBookOverUnder": "0.5",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "fanduel": {
+        "odds": "+12500",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:12.000Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597022235&selectionId=26177956"
+      },
+      "draftkings": {
+        "odds": "+3800",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:06.000Z",
+        "available": true
+      }
+    }
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "overUnder": "0.5",
+    "lastUpdatedAt": "2026-08-04T17:05:12.000Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597022235&selectionId=26177956"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-RHYS_HOSKINS_1_MLB-game-ou-over",
+    "opposingOddID": "batting_triples-RHYS_HOSKINS_1_MLB-game-ou-under",
+    "marketName": "Rhys Hoskins Triples Over/Under",
+    "statID": "batting_triples",
+    "statEntityID": "RHYS_HOSKINS_1_MLB",
+    "periodID": "game",
+    "betTypeID": "ou",
+    "sideID": "over",
+    "playerID": "RHYS_HOSKINS_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": true,
+    "fairOdds": "+2248",
+    "bookOdds": "+4191",
+    "fairOverUnder": "0.5",
+    "bookOverUnder": "0.5",
+    "openFairOdds": "+2357",
+    "openBookOdds": "+4400",
+    "openFairOverUnder": "0.5",
+    "openBookOverUnder": "0.5",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "draftkings": {
+        "odds": "+4400",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "fanduel": {
+        "odds": "+12500",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:12.000Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597022235&selectionId=14407756"
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:06.000Z",
+        "available": true
+      }
+    }
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "overUnder": "0.5",
+    "lastUpdatedAt": "2026-08-04T17:05:12.000Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597022235&selectionId=14407756"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-RHYS_HOSKINS_1_MLB-game-yn-yes",
+    "opposingOddID": "batting_triples-RHYS_HOSKINS_1_MLB-game-yn-no",
+    "marketName": "Rhys Hoskins Any Triples Yes/No",
+    "statID": "batting_triples",
+    "statEntityID": "RHYS_HOSKINS_1_MLB",
+    "periodID": "game",
+    "betTypeID": "yn",
+    "sideID": "yes",
+    "playerID": "RHYS_HOSKINS_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": false,
+    "bookOdds": "+4191",
+    "openBookOdds": "+4400",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "draftkings": {
+        "odds": "+4400",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "fanduel": {
+        "odds": "+12500",
+        "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179577405&selectionId=14407756"
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "lastUpdatedAt": "2026-08-04T17:05:06.000Z",
+        "available": true
+      }
+    },
+    "fairOdds": "+256",
+    "openFairOdds": "+256"
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179577405&selectionId=14407756"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-EUGENIO_SUAREZ_1_MLB-game-ou-over",
+    "opposingOddID": "batting_triples-EUGENIO_SUAREZ_1_MLB-game-ou-under",
+    "marketName": "Eugenio Suárez Triples Over/Under",
+    "statID": "batting_triples",
+    "statEntityID": "EUGENIO_SUAREZ_1_MLB",
+    "periodID": "game",
+    "betTypeID": "ou",
+    "sideID": "over",
+    "playerID": "EUGENIO_SUAREZ_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": true,
+    "fairOdds": "+2413",
+    "bookOdds": "+4506",
+    "fairOverUnder": "0.5",
+    "bookOverUnder": "0.5",
+    "openFairOdds": "+2200",
+    "openBookOdds": "+4100",
+    "openFairOverUnder": "0.5",
+    "openBookOverUnder": "0.5",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "draftkings": {
+        "odds": "+4100",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "fanduel": {
+        "odds": "+12500",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:33.000Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597022869&selectionId=11279812"
+      },
+      "espnbet": {
+        "odds": "+5000",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:41.000Z",
+        "available": true
+      }
+    }
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "overUnder": "0.5",
+    "lastUpdatedAt": "2026-08-04T17:05:33.000Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597022869&selectionId=11279812"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-EUGENIO_SUAREZ_1_MLB-game-yn-yes",
+    "opposingOddID": "batting_triples-EUGENIO_SUAREZ_1_MLB-game-yn-no",
+    "marketName": "Eugenio Suárez Any Triples Yes/No",
+    "statID": "batting_triples",
+    "statEntityID": "EUGENIO_SUAREZ_1_MLB",
+    "periodID": "game",
+    "betTypeID": "yn",
+    "sideID": "yes",
+    "playerID": "EUGENIO_SUAREZ_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": false,
+    "bookOdds": "+4506",
+    "openBookOdds": "+4100",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "draftkings": {
+        "odds": "+4100",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "fanduel": {
+        "odds": "+12500",
+        "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179577739&selectionId=11279812"
+      },
+      "espnbet": {
+        "odds": "+5000",
+        "lastUpdatedAt": "2026-08-04T17:05:41.000Z",
+        "available": true
+      }
+    },
+    "fairOdds": "+255",
+    "openFairOdds": "+255"
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179577739&selectionId=11279812"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-KEBRYAN_HAYES_1_MLB-game-ou-over",
+    "opposingOddID": "batting_triples-KEBRYAN_HAYES_1_MLB-game-ou-under",
+    "marketName": "Ke'Bryan Hayes Triples Over/Under",
+    "statID": "batting_triples",
+    "statEntityID": "KEBRYAN_HAYES_1_MLB",
+    "periodID": "game",
+    "betTypeID": "ou",
+    "sideID": "over",
+    "playerID": "KEBRYAN_HAYES_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": true,
+    "fairOdds": "+2877",
+    "bookOdds": "+5392",
+    "fairOverUnder": "0.5",
+    "bookOverUnder": "0.5",
+    "openFairOdds": "+2252",
+    "openBookOdds": "+4200",
+    "openFairOverUnder": "0.5",
+    "openBookOverUnder": "0.5",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "draftkings": {
+        "odds": "+4200",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "fanduel": {
+        "odds": "+12500",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:33.000Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597022869&selectionId=35810866"
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:41.000Z",
+        "available": true
+      }
+    }
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "overUnder": "0.5",
+    "lastUpdatedAt": "2026-08-04T17:05:33.000Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597022869&selectionId=35810866"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-KEBRYAN_HAYES_1_MLB-game-yn-yes",
+    "opposingOddID": "batting_triples-KEBRYAN_HAYES_1_MLB-game-yn-no",
+    "marketName": "Ke'Bryan Hayes Any Triples Yes/No",
+    "statID": "batting_triples",
+    "statEntityID": "KEBRYAN_HAYES_1_MLB",
+    "periodID": "game",
+    "betTypeID": "yn",
+    "sideID": "yes",
+    "playerID": "KEBRYAN_HAYES_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": false,
+    "bookOdds": "+5392",
+    "openBookOdds": "+4200",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "draftkings": {
+        "odds": "+4200",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "fanduel": {
+        "odds": "+12500",
+        "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179577739&selectionId=35810866"
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "lastUpdatedAt": "2026-08-04T17:05:41.000Z",
+        "available": true
+      }
+    }
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179577739&selectionId=35810866"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-ANDREW_VAUGHN_1_MLB-game-ou-over",
+    "opposingOddID": "batting_triples-ANDREW_VAUGHN_1_MLB-game-ou-under",
+    "statID": "batting_triples",
+    "statEntityID": "ANDREW_VAUGHN_1_MLB",
+    "periodID": "game",
+    "betTypeID": "ou",
+    "sideID": "over",
+    "playerID": "ANDREW_VAUGHN_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": true,
+    "fairOdds": "+6600",
+    "bookOdds": "+12500",
+    "fairOverUnder": "0.5",
+    "bookOverUnder": "0.5",
+    "openFairOdds": "+5290",
+    "openBookOdds": "+10000",
+    "openFairOverUnder": "0.5",
+    "openBookOverUnder": "0.5",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "fanduel": {
+        "odds": "+12500",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:23.000Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597038761&selectionId=38684584"
+      }
+    },
+    "marketName": "Andrew Vaughn Triples Over/Under"
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "overUnder": "0.5",
+    "lastUpdatedAt": "2026-08-04T17:05:23.000Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597038761&selectionId=38684584"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-ANDREW_VAUGHN_1_MLB-game-yn-yes",
+    "opposingOddID": "batting_triples-ANDREW_VAUGHN_1_MLB-game-yn-no",
+    "statID": "batting_triples",
+    "statEntityID": "ANDREW_VAUGHN_1_MLB",
+    "periodID": "game",
+    "betTypeID": "yn",
+    "sideID": "yes",
+    "playerID": "ANDREW_VAUGHN_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": false,
+    "bookOdds": "+12500",
+    "openBookOdds": "+10000",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "fanduel": {
+        "odds": "+12500",
+        "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179588042&selectionId=38684584"
+      }
+    },
+    "marketName": "Andrew Vaughn Any Triples Yes/No"
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179588042&selectionId=38684584"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-CARSON_KELLY_1_MLB-game-ou-over",
+    "opposingOddID": "batting_triples-CARSON_KELLY_1_MLB-game-ou-under",
+    "statID": "batting_triples",
+    "statEntityID": "CARSON_KELLY_1_MLB",
+    "periodID": "game",
+    "betTypeID": "ou",
+    "sideID": "over",
+    "playerID": "CARSON_KELLY_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": true,
+    "fairOdds": "+2066",
+    "bookOdds": "+3844",
+    "fairOverUnder": "0.5",
+    "bookOverUnder": "0.5",
+    "openFairOdds": "+5290",
+    "openBookOdds": "+10000",
+    "openFairOverUnder": "0.5",
+    "openBookOverUnder": "0.5",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "fanduel": {
+        "odds": "+12500",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:58.000Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.596959073&selectionId=23862135"
+      },
+      "draftkings": {
+        "odds": "+3700",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:04:53.000Z",
+        "available": true
+      }
+    },
+    "marketName": "Carson Kelly Triples Over/Under"
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "overUnder": "0.5",
+    "lastUpdatedAt": "2026-08-04T17:05:58.000Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.596959073&selectionId=23862135"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-CARSON_KELLY_1_MLB-game-yn-yes",
+    "opposingOddID": "batting_triples-CARSON_KELLY_1_MLB-game-yn-no",
+    "statID": "batting_triples",
+    "statEntityID": "CARSON_KELLY_1_MLB",
+    "periodID": "game",
+    "betTypeID": "yn",
+    "sideID": "yes",
+    "playerID": "CARSON_KELLY_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": false,
+    "bookOdds": "+3844",
+    "openBookOdds": "+10000",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "fanduel": {
+        "odds": "+12500",
+        "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179541716&selectionId=23862135"
+      },
+      "draftkings": {
+        "odds": "+3700",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "lastUpdatedAt": "2026-08-04T17:04:53.000Z",
+        "available": true
+      }
+    },
+    "marketName": "Carson Kelly Any Triples Yes/No",
+    "fairOdds": "+254",
+    "openFairOdds": "+254"
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179541716&selectionId=23862135"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-JOSH_NAYLOR_1_MLB-game-ou-over",
+    "opposingOddID": "batting_triples-JOSH_NAYLOR_1_MLB-game-ou-under",
+    "marketName": "Josh Naylor Triples Over/Under",
+    "statID": "batting_triples",
+    "statEntityID": "JOSH_NAYLOR_1_MLB",
+    "periodID": "game",
+    "betTypeID": "ou",
+    "sideID": "over",
+    "playerID": "JOSH_NAYLOR_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": true,
+    "fairOdds": "+2248",
+    "bookOdds": "+4191",
+    "fairOverUnder": "0.5",
+    "bookOverUnder": "0.5",
+    "openFairOdds": "+2357",
+    "openBookOdds": "+4400",
+    "openFairOverUnder": "0.5",
+    "openBookOverUnder": "0.5",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "draftkings": {
+        "odds": "+4400",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:42.000Z",
+        "available": true
+      },
+      "fanduel": {
+        "odds": "+12500",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:33.000Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597097086&selectionId=25541331"
+      }
+    }
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "overUnder": "0.5",
+    "lastUpdatedAt": "2026-08-04T17:05:33.000Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597097086&selectionId=25541331"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-JOSH_NAYLOR_1_MLB-game-yn-yes",
+    "opposingOddID": "batting_triples-JOSH_NAYLOR_1_MLB-game-yn-no",
+    "marketName": "Josh Naylor Any Triples Yes/No",
+    "statID": "batting_triples",
+    "statEntityID": "JOSH_NAYLOR_1_MLB",
+    "periodID": "game",
+    "betTypeID": "yn",
+    "sideID": "yes",
+    "playerID": "JOSH_NAYLOR_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": false,
+    "bookOdds": "+4191",
+    "openBookOdds": "+4400",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "draftkings": {
+        "odds": "+4400",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "fanduel": {
+        "odds": "+12500",
+        "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179620014&selectionId=25541331"
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "lastUpdatedAt": "2026-08-04T17:05:42.000Z",
+        "available": true
+      }
+    },
+    "fairOdds": "+256",
+    "openFairOdds": "+256"
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179620014&selectionId=25541331"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-NOLAN_ARENADO_1_MLB-game-ou-over",
+    "opposingOddID": "batting_triples-NOLAN_ARENADO_1_MLB-game-ou-under",
+    "marketName": "Nolan Arenado Triples Over/Under",
+    "statID": "batting_triples",
+    "statEntityID": "NOLAN_ARENADO_1_MLB",
+    "periodID": "game",
+    "betTypeID": "ou",
+    "sideID": "over",
+    "playerID": "NOLAN_ARENADO_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": true,
+    "fairOdds": "+2790",
+    "bookOdds": "+5226",
+    "fairOverUnder": "0.5",
+    "bookOverUnder": "0.5",
+    "openFairOdds": "+5290",
+    "openBookOdds": "+10000",
+    "openFairOverUnder": "0.5",
+    "openBookOverUnder": "0.5",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "fanduel": {
+        "odds": "+12500",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:34.000Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597041522&selectionId=10885569"
+      },
+      "draftkings": {
+        "odds": "+3500",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "overUnder": "0.5",
+        "lastUpdatedAt": "2026-08-04T17:05:02.000Z",
+        "available": true
+      }
+    }
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "overUnder": "0.5",
+    "lastUpdatedAt": "2026-08-04T17:05:34.000Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=42.597041522&selectionId=10885569"
+  }
+}
+{
+  "matchedOdd": {
+    "oddID": "batting_triples-NOLAN_ARENADO_1_MLB-game-yn-yes",
+    "opposingOddID": "batting_triples-NOLAN_ARENADO_1_MLB-game-yn-no",
+    "marketName": "Nolan Arenado Any Triples Yes/No",
+    "statID": "batting_triples",
+    "statEntityID": "NOLAN_ARENADO_1_MLB",
+    "periodID": "game",
+    "betTypeID": "yn",
+    "sideID": "yes",
+    "playerID": "NOLAN_ARENADO_1_MLB",
+    "started": false,
+    "ended": false,
+    "cancelled": false,
+    "bookOddsAvailable": true,
+    "fairOddsAvailable": false,
+    "bookOdds": "+5226",
+    "openBookOdds": "+10000",
+    "scoringSupported": true,
+    "byBookmaker": {
+      "fanduel": {
+        "odds": "+12500",
+        "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+        "available": true,
+        "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179590065&selectionId=10885569"
+      },
+      "draftkings": {
+        "odds": "+3500",
+        "lastUpdatedAt": "2026-08-04T17:05:05.633Z",
+        "available": true
+      },
+      "espnbet": {
+        "odds": "+4000",
+        "lastUpdatedAt": "2026-08-04T17:05:02.000Z",
+        "available": true
+      }
+    }
+  },
+  "bookmakerName": "fanduel",
+  "bookmakerData": {
+    "odds": "+12500",
+    "lastUpdatedAt": "2026-08-04T17:05:12.363Z",
+    "available": true,
+    "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.179590065&selectionId=10885569"
+  }
+}

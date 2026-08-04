@@ -84,6 +84,11 @@ function findArbitrageOpportunities(transformedOdds, bankroll) {
     };
   };
   const odds = Object.values(bestOdds).map((odd) => odd.odds);
+  console.log({
+    marketType: transformedOdds[0].marketType,
+    bestOdds,
+    odds
+  });
   const isArbitrage = calculateIsArbitrage(odds)
   const guaranteedProfit = calculateGuaranteedProfit(bankroll, odds);
   if (isArbitrage && guaranteedProfit/bankroll >= 0.02){

@@ -1,8 +1,8 @@
-const {validateOdds,
-  validateBankroll} = require("./validation.js");
-const {createStandardOdds,
+const { validateOdds,
+  validateBankroll } = require("./validation.js");
+const { createStandardOdds,
   addOutcome,
-  convertAmericanOddToDecimal} = require("./standardOddsFormat.js");
+  convertAmericanOddToDecimal } = require("./standardOddsFormat.js");
 
 function transformSGOapi(event) {
   const standardOddsManyBookmakers = new Map();
@@ -15,28 +15,58 @@ function transformSGOapi(event) {
   };
 
   const relevantOdds = Object.values(event.odds).filter( // Odds for relevant outcomes of ONE event
-        (odd) => 
-          odd.betTypeID === "ml" &&              // moneyline bet type
-          odd.periodID === "game" &&             // Full game period (not 1st inning, 5-inning, etc.)
-          odd.bookOddsAvailable === true         // Odds available from bookmakers
-      );
-    relevantOdds.forEach((odd) => {
-      Object.entries(odd.byBookmaker ?? {}).forEach(([bookmakerName, bookmakerData]) => {
-        // As entries returns the key as the 0th index, value as 1st index
-        if (!bookmakerData.available) return;
-        const eventBookmakerKey = `${event.eventID}_${bookmakerName}-ml`;
-        let standardOdds = standardOddsManyBookmakers.get(eventBookmakerKey);
-        if (!standardOdds) {
-          standardOdds = createStandardOdds(event.eventID, bookmakerName, "ml");
-          standardOdds.event_metadata = event_metadata;
-          standardOddsManyBookmakers.set(eventBookmakerKey, standardOdds);
-        }
-      
-        addOutcome(standardOdds, odd.sideID, convertAmericanOddToDecimal(bookmakerData.odds));
+    (odd) =>
+      ["ml", "sp", "ou", "yn"].includes(odd.betTypeID) &&              // moneyline, spread, over/under bet type
+      (odd.periodID === "game" || odd.periodID === "reg") &&  // Full game period (or regulation for soccer)
+      odd.bookOddsAvailable === true &&         // Odds available from bookmakers
+      ["all", "home", "away"].includes(odd.statEntityID)
+  );
+
+  // Debug: see which markets made it through the filter
+  console.log(
+    relevantOdds.map(odd => ({
+      betTypeID: odd.betTypeID,
+      periodID: odd.periodID
+    }))
+  );
+
+  relevantOdds.forEach((odd) => {
+    Object.entries(odd.byBookmaker ?? {}).forEach(([bookmakerName, bookmakerData]) => {
+      // As entries returns the key as the 0th index, value as 1st index
+      if (!bookmakerData.available) return;
+
+      //test
+      console.log({
+        oddID: odd.oddID,
+        betTypeID: odd.betTypeID,
+        sideID: odd.sideID,
+        statID: odd.statID,
+        statEntityID: odd.statEntityID,
+        points: odd.points,
+        line: odd.line,
+        value: odd.value
       });
+
+      const eventBookmakerKey = `${event.eventID}_${bookmakerName}-${odd.betTypeID}`;
+      let standardOdds = standardOddsManyBookmakers.get(eventBookmakerKey);
+      if (!standardOdds) {
+        standardOdds = createStandardOdds(event.eventID, bookmakerName, odd.betTypeID);
+        standardOdds.event_metadata = event_metadata;
+        standardOddsManyBookmakers.set(eventBookmakerKey, standardOdds);
+      }
+
+    console.log({
+      market: odd.betTypeID,
+      side: odd.sideID,
+      bookmaker: bookmakerName,
+      bookmakerData
     });
 
-    return Array.from(standardOddsManyBookmakers.values());
+      addOutcome(standardOdds, odd.sideID, convertAmericanOddToDecimal(bookmakerData.odds));
+    });
+  });
+
+  return Array.from(standardOddsManyBookmakers.values());
 }
 
 
