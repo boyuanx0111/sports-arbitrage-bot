@@ -74,13 +74,8 @@ async function getOdds() {
                     const arbitrageOppurtunity =
                         findArbitrageOpportunities(marketOdds, 100);
 
-                    arbitrageOppurtunities.push(arbitrageOppurtunity);
-                    
-                    //link to automationManager.js to execute the opportunity
-                    if (
-                        arbitrageOppurtunity &&
-                        arbitrageOppurtunity.guaranteedProfit != null
-                    ) {
+                    if (arbitrageOppurtunity) {
+                        arbitrageOppurtunities.push(arbitrageOppurtunity);
                         leagueProfit += arbitrageOppurtunity.guaranteedProfit;
                         totalProfit += arbitrageOppurtunity.guaranteedProfit;
                         
@@ -88,13 +83,13 @@ async function getOdds() {
                         //await executeOpportunity(arbitrageOppurtunity);
                     }
                 }
-
-                arbitrageByLeague[leagueID] = {
-                    eventCount: events.length,
-                    totalProfit: leagueProfit,
-                    arbitrageOppurtunities
-                };
             }
+
+            arbitrageByLeague[leagueID] = {
+                eventCount: events.length,
+                totalProfit: leagueProfit,
+                arbitrageOppurtunities
+            };
         }
 
         return {

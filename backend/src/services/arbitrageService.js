@@ -1,6 +1,5 @@
 const {
     calculateStake,
-    calculateGuaranteedProfit
 } = require('../utils/arbitrageMath');
 
 function calculateArbitrage(odds, bankroll) {
@@ -68,6 +67,47 @@ function calculateIsArbitrage(odds) {
   return isArbitrage;
 }
 
+// Only works for 2 way right now
+function roundArbitrageStakes(stakes, odds){
+  try {if (Array.isArray(stakes) && stakes.length === 2 && Array.isArray(odds) && odds.length === 2){
+    const totalStake = stakes[0] + stakes[1];
+    const minimumStake1 = totalStake/odds[0];
+    const maximumStake1 = totalStake * (1 - (1/odds[1]));
+    const maximumStake2 = totalStake - minimumStake1;
+    const minimumStake2 = totalStake - maximumStake1;
+
+    if (stakes[0] <= minimumStake1 || stakes[0] >= maximumStake1){
+      throw new Error("Stakes cannot be further rounded without losing the arbitrage opportunity. Please adjust the bankroll or odds.");
+    } else {
+      const increment = 0.50 // Round to the nearest 50p
+
+      const roundedStake1Lower = Math.floor(stakes[0] / increment) * increment;
+      const roundedStake2Lower = totalStake - roundedStake1Lower;
+      if (roundedStake1Lower < minimumStake1 || roundedStake2Lower > maximumStake2){
+        throw new Error("Stakes cannot be further rounded without losing the arbitrage opportunity. Please adjust the bankroll or odds.");
+      }
+      const roundedStake1Upper = Math.ceil(stakes[0] / increment) * increment;
+      const roundedStake2Upper = totalStake - roundedStake1Upper;
+      if (roundedStake1Upper > maximumStake1 || roundedStake2Upper < minimumStake2){
+        throw new Error("Stakes cannot be further rounded without losing the arbitrage opportunity. Please adjust the bankroll or odds.");
+      }
+      const profitLower = Math.min(roundedStake1Lower * odds[0], roundedStake2Lower * odds[1])- totalStake;
+      const profitUpper = Math.min(roundedStake1Upper * odds[0], roundedStake2Upper * odds[1])- totalStake;
+
+      if (profitUpper > profitLower){
+        return [roundedStake1Upper, roundedStake2Upper];
+      } else {
+        return [roundedStake1Lower, roundedStake2Lower];
+      };
+    };
+  };
+  } catch (error) {
+    console.error("Error in roundArbitrageStakes:", error);
+    throw error;
+  };
+}
+
+
 function findArbitrageOpportunities(transformedOdds, bankroll) {
   // transformedOdds is an array of standard odds objects, each representing a bookmaker's odds for a specific event.
   // Maybe create a new function to group events by ID and bet type
@@ -90,7 +130,20 @@ function findArbitrageOpportunities(transformedOdds, bankroll) {
     odds
   });
   const isArbitrage = calculateIsArbitrage(odds)
-  const guaranteedProfit = calculateGuaranteedProfit(bankroll, odds);
+  const rawStakes = calculateStake(bankroll, odds);
+  let stakes = rawStakes;
+
+  if (odds.length === 2) {
+    try {
+      stakes = roundArbitrageStakes(rawStakes, odds);
+    } catch (error) {
+      console.error("Unable to round arbitrage stakes, falling back to raw stakes:", error.message);
+    }
+  }
+
+  const guaranteedProfit = stakes.reduce((profit, stake, index) => {
+    return Math.min(profit, stake * odds[index]);
+  }, Infinity) - bankroll;
   if (isArbitrage && guaranteedProfit/bankroll >= 0.02){
     return {
       eventID: transformedOdds[0].eventID,
@@ -101,7 +154,7 @@ function findArbitrageOpportunities(transformedOdds, bankroll) {
       isArbitrage: true,
       bestOdds: bestOdds,
       
-      stakes: calculateStake(bankroll, odds),
+      stakes,
       guaranteedProfit: guaranteedProfit,
     };
   } else if (isArbitrage && guaranteedProfit/bankroll < 0.02){
@@ -117,7 +170,6 @@ function findArbitrageOpportunities(transformedOdds, bankroll) {
     return false;
   };
   };
-
 
 module.exports = {
   calculateArbitrage,
