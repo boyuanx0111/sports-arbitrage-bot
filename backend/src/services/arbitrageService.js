@@ -1,12 +1,12 @@
 const {
-    calculateStake,
+  calculateStake,
 } = require('../utils/arbitrageMath');
 
 function calculateArbitrage(odds, bankroll) {
   if (!Array.isArray(odds) || odds.length < 2) {
     throw new Error("Invalid odds array, must contain at least two odds")
   }
-  if (typeof bankroll !== "number" || bankroll <= 0){
+  if (typeof bankroll !== "number" || bankroll <= 0) {
     throw new Error("Bankroll must be a positive number")
   }
   for (const odd of odds) {
@@ -45,7 +45,7 @@ function calculateArbitrage(odds, bankroll) {
 }
 
 function calculateIsArbitrage(odds) {
-    if (!Array.isArray(odds) || odds.length < 2) {
+  if (!Array.isArray(odds) || odds.length < 2) {
     throw new Error("Invalid odds array, must contain at least two odds")
   }
   for (const odd of odds) {
@@ -68,39 +68,40 @@ function calculateIsArbitrage(odds) {
 }
 
 // Only works for 2 way right now
-function roundArbitrageStakes(stakes, odds){
-  try {if (Array.isArray(stakes) && stakes.length === 2 && Array.isArray(odds) && odds.length === 2){
-    const totalStake = stakes[0] + stakes[1];
-    const minimumStake1 = totalStake/odds[0];
-    const maximumStake1 = totalStake * (1 - (1/odds[1]));
-    const maximumStake2 = totalStake - minimumStake1;
-    const minimumStake2 = totalStake - maximumStake1;
+function roundArbitrageStakes(stakes, odds) {
+  try {
+    if (Array.isArray(stakes) && stakes.length === 2 && Array.isArray(odds) && odds.length === 2) {
+      const totalStake = stakes[0] + stakes[1];
+      const minimumStake1 = totalStake / odds[0];
+      const maximumStake1 = totalStake * (1 - (1 / odds[1]));
+      const maximumStake2 = totalStake - minimumStake1;
+      const minimumStake2 = totalStake - maximumStake1;
 
-    if (stakes[0] <= minimumStake1 || stakes[0] >= maximumStake1){
-      throw new Error("Stakes cannot be further rounded without losing the arbitrage opportunity. Please adjust the bankroll or odds.");
-    } else {
-      const increment = 0.50 // Round to the nearest 50p
-
-      const roundedStake1Lower = Math.floor(stakes[0] / increment) * increment;
-      const roundedStake2Lower = totalStake - roundedStake1Lower;
-      if (roundedStake1Lower < minimumStake1 || roundedStake2Lower > maximumStake2){
+      if (stakes[0] <= minimumStake1 || stakes[0] >= maximumStake1) {
         throw new Error("Stakes cannot be further rounded without losing the arbitrage opportunity. Please adjust the bankroll or odds.");
-      }
-      const roundedStake1Upper = Math.ceil(stakes[0] / increment) * increment;
-      const roundedStake2Upper = totalStake - roundedStake1Upper;
-      if (roundedStake1Upper > maximumStake1 || roundedStake2Upper < minimumStake2){
-        throw new Error("Stakes cannot be further rounded without losing the arbitrage opportunity. Please adjust the bankroll or odds.");
-      }
-      const profitLower = Math.min(roundedStake1Lower * odds[0], roundedStake2Lower * odds[1])- totalStake;
-      const profitUpper = Math.min(roundedStake1Upper * odds[0], roundedStake2Upper * odds[1])- totalStake;
-
-      if (profitUpper > profitLower){
-        return [roundedStake1Upper, roundedStake2Upper];
       } else {
-        return [roundedStake1Lower, roundedStake2Lower];
+        const increment = 0.50 // Round to the nearest 50p
+
+        const roundedStake1Lower = Math.floor(stakes[0] / increment) * increment;
+        const roundedStake2Lower = totalStake - roundedStake1Lower;
+        if (roundedStake1Lower < minimumStake1 || roundedStake2Lower > maximumStake2) {
+          throw new Error("Stakes cannot be further rounded without losing the arbitrage opportunity. Please adjust the bankroll or odds.");
+        }
+        const roundedStake1Upper = Math.ceil(stakes[0] / increment) * increment;
+        const roundedStake2Upper = totalStake - roundedStake1Upper;
+        if (roundedStake1Upper > maximumStake1 || roundedStake2Upper < minimumStake2) {
+          throw new Error("Stakes cannot be further rounded without losing the arbitrage opportunity. Please adjust the bankroll or odds.");
+        }
+        const profitLower = Math.min(roundedStake1Lower * odds[0], roundedStake2Lower * odds[1]) - totalStake;
+        const profitUpper = Math.min(roundedStake1Upper * odds[0], roundedStake2Upper * odds[1]) - totalStake;
+
+        if (profitUpper > profitLower) {
+          return [roundedStake1Upper, roundedStake2Upper];
+        } else {
+          return [roundedStake1Lower, roundedStake2Lower];
+        };
       };
     };
-  };
   } catch (error) {
     console.error("Error in roundArbitrageStakes:", error);
     throw error;
@@ -111,25 +112,47 @@ function roundArbitrageStakes(stakes, odds){
 function findArbitrageOpportunities(transformedOdds, bankroll) {
   // transformedOdds is an array of standard odds objects, each representing a bookmaker's odds for a specific event.
   // Maybe create a new function to group events by ID and bet type
+  // grouping moved into helpers to group two apis before arb
+  const marketOdds = transformedOdds;
+
   const bestOdds = {};
-  for (const standardOdds of transformedOdds){
+
+  for (const standardOdds of marketOdds) {
     for (const outcome of standardOdds.outcomes) {
-      if (!bestOdds[outcome.outcome]){
-        bestOdds[outcome.outcome] = {odds: outcome.odds, bookmaker: standardOdds.bookmaker};
-      } else{
-        if (bestOdds[outcome.outcome].odds < outcome.odds){
-          bestOdds[outcome.outcome] = {odds: outcome.odds, bookmaker: standardOdds.bookmaker};
+
+      if (!bestOdds[outcome.outcome]) {
+        bestOdds[outcome.outcome] = {
+          odds: outcome.odds,
+          bookmaker: standardOdds.bookmaker
         };
-      };
-    };
-  };
+      } else if (bestOdds[outcome.outcome].odds < outcome.odds) {
+        bestOdds[outcome.outcome] = {
+          odds: outcome.odds,
+          bookmaker: standardOdds.bookmaker
+        };
+      }
+    }
+  }
+
   const odds = Object.values(bestOdds).map((odd) => odd.odds);
-  console.log({
-    marketType: transformedOdds[0].marketType,
-    bestOdds,
-    odds
-  });
+
+  if (odds.length < 2) {
+    return false;
+  }
+
+  //debug 
+  // console.log({
+  //   marketType: marketOdds[0].marketType,
+  //   line: marketOdds[0].line,
+  //   bestOdds,
+  //   odds
+  // });
   const isArbitrage = calculateIsArbitrage(odds)
+
+  if (!isArbitrage) {
+    return false;
+  }
+
   const rawStakes = calculateStake(bankroll, odds);
   let stakes = rawStakes;
 
@@ -144,32 +167,34 @@ function findArbitrageOpportunities(transformedOdds, bankroll) {
   const guaranteedProfit = stakes.reduce((profit, stake, index) => {
     return Math.min(profit, stake * odds[index]);
   }, Infinity) - bankroll;
-  if (isArbitrage && guaranteedProfit/bankroll >= 0.02){
+  if (isArbitrage && guaranteedProfit / bankroll >= 0.02) {
     return {
-      eventID: transformedOdds[0].eventID,
-      homeTeam: transformedOdds[0].homeTeam,
-      awayTeam: transformedOdds[0].awayTeam,
-      startTime: transformedOdds[0].startTime,
-      marketType: transformedOdds[0].marketType,
+      eventID: marketOdds[0].eventID,
+      homeTeam: marketOdds[0].homeTeam,
+      awayTeam: marketOdds[0].awayTeam,
+      startTime: marketOdds[0].startTime,
+      marketType: marketOdds[0].marketType,
+      line: marketOdds[0].line,
       isArbitrage: true,
       bestOdds: bestOdds,
-      
+
       stakes,
       guaranteedProfit: guaranteedProfit,
     };
-  } else if (isArbitrage && guaranteedProfit/bankroll < 0.02){
+  } else if (isArbitrage && guaranteedProfit / bankroll < 0.02) {
     return {
       isArbitrage: true,
       alert: "Arbitrage detected but profit not enough, less than 2%",
-      eventID: transformedOdds[0].eventID,
-      homeTeam: transformedOdds[0].homeTeam,
-      awayTeam: transformedOdds[0].awayTeam,
+      eventID: marketOdds[0].eventID,
+      homeTeam: marketOdds[0].homeTeam,
+      awayTeam: marketOdds[0].awayTeam,
       guaranteedProfit: 0
     };
   } else {
     return false;
-  };
-  };
+  } // closes for marketodds
+  return false;
+} // closes findarbopportunities
 
 module.exports = {
   calculateArbitrage,

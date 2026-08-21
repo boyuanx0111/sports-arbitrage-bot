@@ -1,0 +1,82 @@
+require("dotenv").config();
+
+const {
+    getFootballEvents,
+    getEventOdds
+} = require("../src/services/ukOddsApiService");
+
+const {
+    transformUKOddsAPI
+} = require("../src/utils/helpers");
+
+const {
+    findArbitrageOpportunities
+} = require("../src/services/arbitrageService");
+
+async function test() {
+    try {
+        const today = new Date().toISOString().split("T")[0];
+
+        const eventsResponse = await getFootballEvents(today);
+        const events = eventsResponse.events;
+
+        if (!Array.isArray(events) || events.length === 0) {
+            throw new Error("No football events returned.");
+        }
+
+        // Use first event with odds from at least 2 bookmakers
+        const event = events.find(
+            event =>
+                event.markets_with_odds > 0 &&
+                event.unique_bookmaker_codes >= 2
+        );
+
+        if (!event) {
+            throw new Error("No suitable event found.");
+        }
+
+        console.log("\nTESTING EVENT:");
+        console.log(`${event.home_team} vs ${event.away_team}`);
+        console.log(`League: ${event.league_name}`);
+        console.log(`Event ID: ${event.event_id}`);
+        console.log(`Bookmakers: ${event.unique_bookmaker_codes}`);
+        console.log(`Markets: ${event.markets_with_odds}`);
+
+        const oddsResponse = await getEventOdds(event.event_id);
+
+        console.log("\nCORE MARKETS:");
+
+        console.log(
+            oddsResponse.markets.map(market => ({
+                name: market.market_name,
+                group: market.market_group
+            }))
+        );
+        
+        const asianHandicap = oddsResponse.markets.find(
+            market => market.market_name === "Asian Handicap"
+        );
+
+        console.log("\nASIAN HANDICAP SELECTIONS:");
+        console.dir(asianHandicap?.selections, { depth: null });
+
+        const transformed = transformUKOddsAPI(oddsResponse);
+
+        const opportunities = findArbitrageOpportunities(
+            transformed,
+            100
+        );
+
+        console.log("\nARBITRAGE OPPORTUNITIES:");
+        console.dir(opportunities, { depth: null });
+
+        console.log("\nTRANSFORMED ODDS:");
+        console.dir(transformed, { depth: null });
+
+    } catch (error) {
+        console.error("\nTEST FAILED:");
+        console.error(error.message);
+    }
+}
+
+test();

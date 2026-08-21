@@ -1,0 +1,29 @@
+require("dotenv").config();
+
+const { getEventOdds } = require("../src/services/ukOddsApiService");
+const { transformUKOddsAPI } = require("../src/utils/helpers");
+
+async function testUKSpreadTransform() {
+    const eventID = "evt_d0cc7812167e7963756a7e4104db";
+
+    try {
+        const odds = await getEventOdds(eventID);
+
+        const transformed = transformUKOddsAPI(odds);
+
+        const spreadResults = transformed.filter(
+            odd => odd.marketType === "sp"
+        );
+
+        console.log("TRANSFORMED UK SP:");
+        console.log(JSON.stringify(spreadResults, null, 2));
+
+    } catch (error) {
+        console.error(
+            "Test error:",
+            error.response?.data || error.message
+        );
+    }
+}
+
+testUKSpreadTransform();

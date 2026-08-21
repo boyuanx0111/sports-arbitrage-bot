@@ -1,0 +1,72 @@
+require("dotenv").config();
+
+const axios = require("axios");
+
+const { SPORTSGAMEODDS } = require("../src/config");
+const { transformSGOapi } = require("../src/utils/helpers");
+
+async function testSGOSpreadTransform() {
+    try {
+        const league = SPORTSGAMEODDS.LEAGUES[0];
+
+        const response = await axios.get(
+            `${SPORTSGAMEODDS.BASE_URL}/events`,
+            {
+                headers: {
+                    "X-API-Key": SPORTSGAMEODDS.API_KEY
+                },
+                params: {
+                    leagueID: league.leagueID,
+                    sportID: league.sportID,
+                    oddsAvailable: "true",
+                    oddsPresent: "true",
+                    limit: 5
+                }
+            }
+        );
+
+        const events = response.data.data || [];
+
+        for (const event of events) {
+
+            const hasSpread = Object.values(event.odds || {}).some(
+                odd =>
+                    odd.betTypeID === "sp" &&
+                    odd.bookOddsAvailable === true &&
+                    (odd.periodID === "game" || odd.periodID === "reg")
+            );
+
+            if (!hasSpread) {
+                continue;
+            }
+
+            console.log("\nEVENT:");
+            console.log({
+                eventID: event.eventID,
+                homeTeam: event.teams?.home?.names?.long,
+                awayTeam: event.teams?.away?.names?.long,
+                startTime: event.status?.startsAt
+            });
+
+            const transformed = transformSGOapi(event);
+
+            const spreadResults = transformed.filter(
+                odd => odd.marketType === "sp"
+            );
+
+            console.log("\nTRANSFORMED SGO SP:");
+
+            console.log(JSON.stringify(spreadResults, null, 2));
+
+            break;
+        }
+
+    } catch (error) {
+        console.error(
+            "Test error:",
+            error.response?.data || error.message
+        );
+    }
+}
+
+testSGOSpreadTransform();

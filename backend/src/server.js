@@ -15,3 +15,27 @@ console.log(
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+//debuug
+// const server = app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
+
+// console.log("Server listening:", server.listening);
+
+// server.on("close", () => {
+//   console.log("SERVER CLOSE EVENT");
+// });
+
+// server.on("error", (error) => {
+//   console.error("SERVER ERROR:", error);
+// });
+
+// process.on("beforeExit", (code) => {
+//   console.log("PROCESS BEFORE EXIT:", code);
+// });
+
+// process.on("exit", (code) => {
+//   console.log("PROCESS EXIT:", code);
+// });

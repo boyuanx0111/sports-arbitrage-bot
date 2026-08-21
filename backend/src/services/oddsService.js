@@ -2,18 +2,82 @@ const axios = require("axios");
 
 const { SPORTSGAMEODDS } = require("../config");
 
-const { transformSGOapi } = require("../utils/helpers");
+const {
+    getFootballEventsRange,
+    getEventOdds
+} = require("./ukOddsApiService");
 
-const { calculateArbitrage,
-    calculateIsArbitrage,
-    findArbitrageOpportunities } = require("./arbitrageService")
+const {
+    transformSGOapi,
+    transformUKOddsAPI,
+    createEventKey,
+    createMarketKey
+} = require("../utils/helpers");
+
+const { findArbitrageOpportunities } = require("./arbitrageService")
 
 const { executeOpportunity } = require("../automation/automationManager");
+
+// avoid rate limit (ukodds)
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// fetch odds from ukapiservice
+async function getUKOdds() {
+    const today = new Date();
+
+    const oneWeekLater = new Date(today);
+    oneWeekLater.setDate(oneWeekLater.getDate() + 5);
+
+    const from = today.toISOString().split("T")[0];
+    const to = oneWeekLater.toISOString().split("T")[0];
+
+    const eventsResponse = await getFootballEventsRange(from, to, "MLS");
+
+    const events = eventsResponse.events || [];
+
+    const eventsWithOdds = events.filter(
+        event =>
+            event.markets_with_odds > 0
+    );
+
+    // instead of burst request (free plan rate limit)
+    const oddsResponses = [];
+
+    for (const event of eventsWithOdds) {
+        try {
+            const odds = await getEventOdds(event.event_id);
+            oddsResponses.push(odds);
+
+        } catch (error) {
+            const apiError = error.response?.data?.error;
+
+            if (apiError?.code === "rate_limit_exceeded") {
+                const match = apiError.message.match(/(\d+)/);
+                const retryAfter = match ? Number(match[1]) : 5;
+
+                console.log(`Rate limited, waiting ${retryAfter}s...`);
+                await sleep((retryAfter + 1) * 1000);
+                continue;
+            }
+            console.error(
+                `Failed to fetch odds for ${event.event_id}:`,
+                error.response?.data || error.message
+            );
+        }
+    }
+
+    return {
+        events: eventsWithOdds,
+        oddsResponses
+    };
+}
 
 async function getOdds() {
 
     try {
-
+        // raw fetch for each league
         const responses = await Promise.all(
             SPORTSGAMEODDS.LEAGUES.map(({ leagueID, sportID }) =>
                 axios.get(
@@ -27,79 +91,122 @@ async function getOdds() {
                             sportID,
                             oddsAvailable: "true",
                             oddsPresent: "true",
-                            limit: 5
+                            limit: 20
                         }
                     }
                 )
             )
         );
 
+        // Store the raw SGO events by league before transforming them
         const eventsByLeague = {};
 
         SPORTSGAMEODDS.LEAGUES.forEach((league, index) => {
             eventsByLeague[league.leagueID] = responses[index].data.data;
         });
 
-        // Transform raw API response into standardized format (extracts event details and filters moneyline odds)
-        const arbitrageByLeague = {};
-        let totalProfit = 0;
+        // Transform raw API response into standardized format (deleteed SGO separate arb logic)
+        const allTransformedSGO = [];
 
-        for (const [leagueID, events] of Object.entries(eventsByLeague)) {
+        for (const events of Object.values(eventsByLeague)) {
 
-            // Transform the events for each league 
             const transformedEvents = events.map(transformSGOapi);
 
-            const arbitrageOppurtunities = [];
-            let leagueProfit = 0;
+            allTransformedSGO.push(
+                ...transformedEvents.flat()
+            );
+        }
 
-            for (const transformedEventList of transformedEvents) {
+        // Fetch and transform UK Odds API data
+        const ukOddsData = await getUKOdds();
 
-                if (transformedEventList.length === 0) {
+        const transformedUKEvents = ukOddsData.oddsResponses.map(transformUKOddsAPI);
+
+        const allTransformedUK = transformedUKEvents.flat();
+
+        // Combine transformed odds from both APIs into single structure per event
+        const combinedEvents = {};
+
+        const allOdds = [
+            ...allTransformedSGO,
+            ...allTransformedUK
+        ];
+
+        for (const standardOdds of allOdds) {
+
+            const eventKey = createEventKey(standardOdds);
+
+            if (!combinedEvents[eventKey]) {
+                combinedEvents[eventKey] = [];
+            }
+
+            combinedEvents[eventKey].push(standardOdds);
+        }
+
+        // Group markets by event 
+        const combinedMarketsByEvent = {};
+
+        for (const [eventKey, eventOdds] of Object.entries(combinedEvents)) {
+
+            const markets = {};
+
+            for (const standardOdds of eventOdds) {
+
+                const marketKey = createMarketKey(standardOdds);
+
+                if (!marketKey) {
                     continue;
                 }
 
-                //split by market type
-                const markets = {};
-
-                for (const standardOdds of transformedEventList) {
-                    if (!markets[standardOdds.marketType]) {
-                        markets[standardOdds.marketType] = [];
-                    }
-
-                    markets[standardOdds.marketType].push(standardOdds);
+                if (!markets[marketKey]) {
+                    markets[marketKey] = [];
                 }
 
-                for (const marketOdds of Object.values(markets)) {
-
-                    const arbitrageOppurtunity =
-                        findArbitrageOpportunities(marketOdds, 100);
-
-                    if (arbitrageOppurtunity) {
-                        arbitrageOppurtunities.push(arbitrageOppurtunity);
-                        leagueProfit += arbitrageOppurtunity.guaranteedProfit;
-                        totalProfit += arbitrageOppurtunity.guaranteedProfit;
-                        
-                        //link to automation, commented out for now because only ML supported
-                        //await executeOpportunity(arbitrageOppurtunity);
-                    }
-                }
+                markets[marketKey].push(standardOdds);
             }
 
-            arbitrageByLeague[leagueID] = {
-                eventCount: events.length,
-                totalProfit: leagueProfit,
-                arbitrageOppurtunities
-            };
+            combinedMarketsByEvent[eventKey] = markets;
         }
 
+        // arb for combined apis
+        const combinedArbitrageOpportunities = [];
+
+        for (const [eventKey, markets] of Object.entries(combinedMarketsByEvent)) {
+
+            for (const [marketKey, marketOdds] of Object.entries(markets)) {
+
+                if (marketOdds.length < 2) {
+                    continue;
+                }
+
+                const arbitrageOpportunity =
+                    findArbitrageOpportunities(marketOdds, 100);
+
+                if (arbitrageOpportunity) {
+
+                    combinedArbitrageOpportunities.push({
+                        eventKey,
+                        marketKey,
+                        ...arbitrageOpportunity
+                    });
+                }
+            }
+        }
+
+        const totalProfit = combinedArbitrageOpportunities.reduce(
+            (sum, opportunity) =>
+                sum + (opportunity.guaranteedProfit || 0),
+            0
+        );
+
         return {
-            leagues: arbitrageByLeague, // Returns the arb events by league
             totalProfit,    // Also returned the total profit across all the events
+            combinedArbitrageOpportunities
         };
         // To inspect the data must alter the response of this function as this is sent as a json response to the website
     } catch (error) {
 
-        console.log("SportsgameOdds API error:");
+        console.log("API error:");
         console.log(error.response?.data || error.message);
         throw error;
     }
