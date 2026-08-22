@@ -48,10 +48,115 @@ function transformSGOapi(event) {
       }
 
       addOutcome(standardOdds, odd.sideID, convertAmericanOddToDecimal(bookmakerData.odds));
+
+      // Add alternate O/U lines
+      if (odd.betTypeID === "ou") {
+
+        for (const altLine of bookmakerData.altLines ?? []) {
+
+          if (!altLine.available) {
+            continue;
+          }
+
+          const altLineValue = Number(altLine.overUnder);
+
+          // Only support half-lines
+          if (Math.abs(altLineValue % 1) !== 0.5) {
+            continue;
+          }
+
+          const altEventBookmakerKey =
+            `${event.eventID}_${bookmakerName}-${odd.betTypeID}-${odd.periodID}-${odd.statID}-${odd.statEntityID}-${altLineValue}`;
+
+          let altStandardOdds =
+            standardOddsManyBookmakers.get(altEventBookmakerKey);
+
+          if (!altStandardOdds) {
+
+            altStandardOdds =
+              createStandardOdds(
+                event.eventID,
+                bookmakerName,
+                odd.betTypeID
+              );
+
+            altStandardOdds.event_metadata = event_metadata;
+
+            altStandardOdds.periodID = odd.periodID;
+            altStandardOdds.statID = odd.statID;
+            altStandardOdds.statEntityID = odd.statEntityID;
+            altStandardOdds.line = altLineValue;
+
+            standardOddsManyBookmakers.set(
+              altEventBookmakerKey,
+              altStandardOdds
+            );
+          }
+
+          addOutcome(
+            altStandardOdds,
+            odd.sideID,
+            convertAmericanOddToDecimal(altLine.odds)
+          );
+
+        }
+      }
+
+
+      // Add alternate spread lines
+      if (odd.betTypeID === "sp") {
+
+        for (const altLine of bookmakerData.altLines ?? []) {
+
+          if (!altLine.available) {
+            continue;
+          }
+
+          const altLineValue = Number(altLine.spread);
+
+          // Only support half-lines
+          if (Math.abs(altLineValue % 1) !== 0.5) {
+            continue;
+          }
+
+          const altEventBookmakerKey =
+            `${event.eventID}_${bookmakerName}-${odd.betTypeID}-${odd.periodID}-${odd.statID}-${odd.statEntityID}-${altLineValue}`;
+
+          let altStandardOdds =
+            standardOddsManyBookmakers.get(altEventBookmakerKey);
+
+          if (!altStandardOdds) {
+
+            altStandardOdds =
+              createStandardOdds(
+                event.eventID,
+                bookmakerName,
+                odd.betTypeID
+              );
+
+            altStandardOdds.event_metadata = event_metadata;
+            altStandardOdds.periodID = odd.periodID;
+            altStandardOdds.statID = odd.statID;
+            altStandardOdds.statEntityID = odd.statEntityID;
+            altStandardOdds.line = altLineValue;
+
+            standardOddsManyBookmakers.set(
+              altEventBookmakerKey,
+              altStandardOdds
+            );
+          }
+
+          addOutcome(
+            altStandardOdds,
+            odd.sideID,
+            convertAmericanOddToDecimal(altLine.odds)
+          );
+        }
+      }
     });
   });
 
-  return Array.from(standardOddsManyBookmakers.values());
+return Array.from(standardOddsManyBookmakers.values());
 }
 
 function transformUKOddsAPI(event) {

@@ -4,7 +4,8 @@ const { SPORTSGAMEODDS } = require("../config");
 
 const {
     getFootballEventsRange,
-    getEventOdds
+    getEventOdds,
+    getEventOddsBatch
 } = require("./ukOddsApiService");
 
 const {
@@ -18,6 +19,14 @@ const { findArbitrageOpportunities } = require("./arbitrageService")
 
 const { executeOpportunity } = require("../automation/automationManager");
 
+const {
+    getEvents
+} = require("./eventCacheService");
+
+const {
+    getSGOEventsByIDs
+} = require("./sgoAPIService");
+
 // avoid rate limit (ukodds)
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -25,45 +34,67 @@ function sleep(ms) {
 
 // fetch odds from ukapiservice
 async function getUKOdds() {
-    const today = new Date();
+    // Read UK fixtures from event cache
+    const eventsWithOdds =
+        getEvents("uk");
 
-    const oneWeekLater = new Date(today);
-    oneWeekLater.setDate(oneWeekLater.getDate() + 5);
+    // Prevent odds scan from running with an empty UK event cache
+    if (eventsWithOdds.length === 0) {
+        throw new Error(
+            "UK event cache is empty. Refresh event cache before scanning odds."
+        );
+    }
 
-    const from = today.toISOString().split("T")[0];
-    const to = oneWeekLater.toISOString().split("T")[0];
-
-    const eventsResponse = await getFootballEventsRange(from, to, "MLS");
-
-    const events = eventsResponse.events || [];
-
-    const eventsWithOdds = events.filter(
-        event =>
-            event.markets_with_odds > 0
+    // Collect fixture IDs and fetch their odds in one batch request via batch endpoint on ukoddsapi
+    const eventIDs = eventsWithOdds.map(
+        event => event.event_id
     );
 
-    // instead of burst request (free plan rate limit)
-    const oddsResponses = [];
+    let oddsResponses = [];
 
-    for (const event of eventsWithOdds) {
+    if (eventIDs.length > 0) {
         try {
-            const odds = await getEventOdds(event.event_id);
-            oddsResponses.push(odds);
+            const batchResponse =
+                await getEventOddsBatch(eventIDs);
+
+            oddsResponses =
+                Object.values(batchResponse.odds || {});
+
+            console.log(
+                `UK batch success: returned ${oddsResponses.length}/${eventIDs.length} events`
+            );
 
         } catch (error) {
             const apiError = error.response?.data?.error;
 
-            if (apiError?.code === "rate_limit_exceeded") {
-                const match = apiError.message.match(/(\d+)/);
-                const retryAfter = match ? Number(match[1]) : 5;
-
-                console.log(`Rate limited, waiting ${retryAfter}s...`);
-                await sleep((retryAfter + 1) * 1000);
-                continue;
+            // Only retry if UK Odds API specifically rate limited us
+            if (apiError?.code !== "rate_limit_exceeded") {
+                throw error;
             }
-            console.error(
-                `Failed to fetch odds for ${event.event_id}:`,
-                error.response?.data || error.message
+
+            // Retry-After header supplied by the API
+            const retryAfter =
+                Number(error.response?.headers?.["retry-after"]) || 5;
+
+            console.log(
+                `UK batch rate limited, waiting ${retryAfter}s...`
+            );
+
+            await sleep((retryAfter + 1) * 1000);
+
+            console.log(
+                `UK batch: retrying ${eventIDs.length} events...`
+            );
+
+            // Retry the batch once
+            const batchResponse =
+                await getEventOddsBatch(eventIDs);
+
+            oddsResponses =
+                Object.values(batchResponse.odds || {});
+
+            console.log(
+                `UK batch retry success: returned ${oddsResponses.length}/${eventIDs.length} events`
             );
         }
     }
@@ -77,45 +108,58 @@ async function getUKOdds() {
 async function getOdds() {
 
     try {
-        // raw fetch for each league
-        const responses = await Promise.all(
-            SPORTSGAMEODDS.LEAGUES.map(({ leagueID, sportID }) =>
-                axios.get(
-                    `${SPORTSGAMEODDS.BASE_URL}/events`,
-                    {
-                        headers: {
-                            "X-API-Key": SPORTSGAMEODDS.API_KEY
-                        },
-                        params: {
-                            leagueID, //in config
-                            sportID,
-                            oddsAvailable: "true",
-                            oddsPresent: "true",
-                            limit: 20
-                        }
-                    }
-                )
-            )
-        );
+        // // raw fetch for each league
+        // const responses = await Promise.all(
+        //     SPORTSGAMEODDS.LEAGUES.map(({ leagueID, sportID }) =>
+        //         axios.get(
+        //             `${SPORTSGAMEODDS.BASE_URL}/events`,
+        //             {
+        //                 headers: {
+        //                     "X-API-Key": SPORTSGAMEODDS.API_KEY
+        //                 },
+        //                 params: {
+        //                     leagueID, //in config
+        //                     sportID,
+        //                     oddsAvailable: "true",
+        //                     oddsPresent: "true",
+        //                     limit: 20
+        //                 }
+        //             }
+        //         )
+        //     )
+        // );
 
-        // Store the raw SGO events by league before transforming them
-        const eventsByLeague = {};
+        // // Store the raw SGO events by league before transforming them
+        // const eventsByLeague = {};
 
-        SPORTSGAMEODDS.LEAGUES.forEach((league, index) => {
-            eventsByLeague[league.leagueID] = responses[index].data.data;
-        });
+        // SPORTSGAMEODDS.LEAGUES.forEach((league, index) => {
+        //     eventsByLeague[league.leagueID] = responses[index].data.data;
+        // });
 
-        // Transform raw API response into standardized format (deleteed SGO separate arb logic)
-        const allTransformedSGO = [];
+        // read from cache instead of direct fetch above (just keeping to show you get rid once you see ^)@pandley
+        const cachedSGOEvents =
+            getEvents("sgo");
 
-        for (const events of Object.values(eventsByLeague)) {
-
-            const transformedEvents = events.map(transformSGOapi);
-
-            allTransformedSGO.push(
-                ...transformedEvents.flat()
+        // Prevent odds scan from running with an empty SGO event cache
+        if (cachedSGOEvents.length === 0) {
+            throw new Error(
+                "SGO event cache is empty. Refresh event cache before scanning odds."
             );
         }
+
+        const sgoEventIDs =
+            cachedSGOEvents.map(
+                event => event.eventID
+            );
+
+        // get fresh odds from cached event ids
+        const freshSGOEvents =
+            await getSGOEventsByIDs(
+                sgoEventIDs
+            );
+
+        // Transform raw API response into standardized format (deleteed SGO separate arb logic)
+        const allTransformedSGO = freshSGOEvents.map(transformSGOapi).flat();
 
         // Fetch and transform UK Odds API data
         const ukOddsData = await getUKOdds();

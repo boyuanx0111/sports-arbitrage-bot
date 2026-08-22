@@ -76,6 +76,34 @@ async function getEventOdds(eventID) {
     }
 }
 
+async function getEventOddsBatch(eventIDs) {
+    try {
+        const response = await axios.post(
+            `${UKODDS.BASE_URL}/v1/football/odds/batch`,
+            {
+                event_ids: eventIDs
+            },
+            {
+                headers: {
+                    "X-Api-Key": UKODDS.API_KEY
+                },
+                params: {
+                    package: "core",
+                    odds_format: "decimal"
+                }
+            }
+        );
+
+        return response.data;
+
+    } catch (error) {
+        console.log("UK Odds API batch odds error:");
+        console.log(error.response?.data || error.message);
+
+        throw error;
+    }
+}
+
 async function getFootballEventsRange(from, to, league) {
     try {
         const response = await axios.get(
@@ -109,5 +137,6 @@ module.exports = {
     verifyUKOddsApi,
     getFootballEvents,
     getEventOdds,
+    getEventOddsBatch,
     getFootballEventsRange
 };
