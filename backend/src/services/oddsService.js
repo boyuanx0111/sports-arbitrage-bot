@@ -38,11 +38,13 @@ async function getUKOdds() {
     const eventsWithOdds =
         getEvents("uk");
 
-    // Prevent odds scan from running with an empty UK event cache
+    // Allow the odds endpoint to continue when the UK cache is empty; treat it as no UK data.
     if (eventsWithOdds.length === 0) {
-        throw new Error(
-            "UK event cache is empty. Refresh event cache before scanning odds."
-        );
+        console.log("UK event cache is empty; continuing without UK data.");
+        return {
+            events: [],
+            oddsResponses: []
+        };
     }
 
     // Collect fixture IDs and fetch their odds in one batch request via batch endpoint on ukoddsapi
@@ -140,33 +142,47 @@ async function getOdds() {
         const cachedSGOEvents =
             getEvents("sgo");
 
-        // Prevent odds scan from running with an empty SGO event cache
-        if (cachedSGOEvents.length === 0) {
+        const cachedUKEvents =
+            getEvents("uk");
+
+        console.log(`Cached SGO events: ${cachedSGOEvents.length}`);
+        console.log(`Cached UK events: ${cachedUKEvents.length}`);
+
+        // Allow the odds endpoint to continue when only one data source is populated.
+        if (cachedSGOEvents.length === 0 && cachedUKEvents.length === 0) {
             throw new Error(
-                "SGO event cache is empty. Refresh event cache before scanning odds."
+                "SGO and UK event cache is empty. Refresh event cache before scanning odds."
             );
         }
 
-        const sgoEventIDs =
-            cachedSGOEvents.map(
-                event => event.eventID
-            );
+        let allTransformedSGO = [];
 
-        // get fresh odds from cached event ids
-        const freshSGOEvents =
-            await getSGOEventsByIDs(
-                sgoEventIDs
-            );
+        if (cachedSGOEvents.length > 0) {
+            const sgoEventIDs =
+                cachedSGOEvents.map(
+                    event => event.eventID
+                );
 
-        // Transform raw API response into standardized format (deleteed SGO separate arb logic)
-        const allTransformedSGO = freshSGOEvents.map(transformSGOapi).flat();
+            // get fresh odds from cached event ids
+            const freshSGOEvents =
+                await getSGOEventsByIDs(
+                    sgoEventIDs
+                );
 
-        // Fetch and transform UK Odds API data
-        const ukOddsData = await getUKOdds();
+            // Transform raw API response into standardized format (deleteed SGO separate arb logic)
+            allTransformedSGO = freshSGOEvents.map(transformSGOapi).flat();
+        }
 
-        const transformedUKEvents = ukOddsData.oddsResponses.map(transformUKOddsAPI);
+        let allTransformedUK = [];
 
-        const allTransformedUK = transformedUKEvents.flat();
+        if (cachedUKEvents.length > 0) {
+            // Fetch and transform UK Odds API data
+            const ukOddsData = await getUKOdds();
+
+            const transformedUKEvents = ukOddsData.oddsResponses.map(transformUKOddsAPI);
+
+            allTransformedUK = transformedUKEvents.flat();
+        }
 
         // Combine transformed odds from both APIs into single structure per event
         const combinedEvents = {};
@@ -244,6 +260,7 @@ async function getOdds() {
         );
 
         return {
+            allOdds,
             totalProfit,    // Also returned the total profit across all the events
             combinedArbitrageOpportunities
         };

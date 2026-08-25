@@ -70,42 +70,83 @@ function calculateIsArbitrage(odds) {
 // Only works for 2 way right now
 function roundArbitrageStakes(stakes, odds) {
   try {
-    if (Array.isArray(stakes) && stakes.length === 2 && Array.isArray(odds) && odds.length === 2) {
-      const totalStake = stakes[0] + stakes[1];
-      const minimumStake1 = totalStake / odds[0];
-      const maximumStake1 = totalStake * (1 - (1 / odds[1]));
-      const maximumStake2 = totalStake - minimumStake1;
-      const minimumStake2 = totalStake - maximumStake1;
+    if (!Array.isArray(stakes) || stakes.length !== 2 || !Array.isArray(odds) || odds.length !== 2) {
+      return stakes;
+    }
 
-      if (stakes[0] <= minimumStake1 || stakes[0] >= maximumStake1) {
-        throw new Error("Stakes cannot be further rounded without losing the arbitrage opportunity. Please adjust the bankroll or odds.");
-      } else {
-        const increment = 0.50 // Round to the nearest 50p
+    const totalStake = stakes.reduce((sum, stake) => sum + stake, 0);
+    const increment = 0.50; // Round to the nearest 50p
+    const minimumStakes = odds.map((odd) => totalStake / odd);
+    const maximumStakes = minimumStakes.map((minimumStake, index) =>
+      totalStake - minimumStakes.reduce((sum, stake, j) => (index !== j ? sum + stake : sum), 0)
+    );
+    const lowerStakes = stakes.map((stake) => Math.floor(stake / increment) * increment);
+    const upperStakes = stakes.map((stake) => Math.ceil(stake / increment) * increment);
 
-        const roundedStake1Lower = Math.floor(stakes[0] / increment) * increment;
-        const roundedStake2Lower = totalStake - roundedStake1Lower;
-        if (roundedStake1Lower < minimumStake1 || roundedStake2Lower > maximumStake2) {
-          throw new Error("Stakes cannot be further rounded without losing the arbitrage opportunity. Please adjust the bankroll or odds.");
+    function calculateGuaranteedProfit(testStakes) {
+      const returns = testStakes.map((stake, i) => stake * odds[i]);
+      return Math.min(...returns) - totalStake;
+    }
+
+    for (let i = 0; i < stakes.length; i++) {
+      if (stakes[i] < minimumStakes[i] || stakes[i] > maximumStakes[i]) {
+        throw new Error(
+          "Stakes cannot be further rounded without losing the arbitrage opportunity. Please adjust the bankroll or odds."
+        );
+      }
+    }
+
+    let bestStakes = null;
+    let bestProfit = -Infinity;
+
+    function search(index, currentStakes) {
+      if (index === stakes.length) {
+        const currentTotal = currentStakes.reduce((sum, stake) => sum + stake, 0);
+
+        if (Math.abs(currentTotal - totalStake) > 0.000001) {
+          return;
         }
-        const roundedStake1Upper = Math.ceil(stakes[0] / increment) * increment;
-        const roundedStake2Upper = totalStake - roundedStake1Upper;
-        if (roundedStake1Upper > maximumStake1 || roundedStake2Upper < minimumStake2) {
-          throw new Error("Stakes cannot be further rounded without losing the arbitrage opportunity. Please adjust the bankroll or odds.");
-        }
-        const profitLower = Math.min(roundedStake1Lower * odds[0], roundedStake2Lower * odds[1]) - totalStake;
-        const profitUpper = Math.min(roundedStake1Upper * odds[0], roundedStake2Upper * odds[1]) - totalStake;
 
-        if (profitUpper > profitLower) {
-          return [roundedStake1Upper, roundedStake2Upper];
-        } else {
-          return [roundedStake1Lower, roundedStake2Lower];
-        };
-      };
-    };
+        for (let i = 0; i < currentStakes.length; i++) {
+          if (
+            currentStakes[i] <= minimumStakes[i] ||
+            currentStakes[i] >= maximumStakes[i]
+          ) {
+            return;
+          }
+        }
+
+        const guaranteedProfit = calculateGuaranteedProfit(currentStakes);
+
+        if (guaranteedProfit <= 0) {
+          return;
+        }
+
+        if (guaranteedProfit > bestProfit) {
+          bestProfit = guaranteedProfit;
+          bestStakes = [...currentStakes];
+        }
+
+        return;
+      }
+
+      search(index + 1, [...currentStakes, lowerStakes[index]]);
+      search(index + 1, [...currentStakes, upperStakes[index]]);
+    }
+
+    search(0, []);
+
+    if (!bestStakes) {
+      throw new Error(
+        "Stakes cannot be rounded without losing the arbitrage opportunity. Please adjust the bankroll or odds."
+      );
+    }
+
+    return bestStakes;
   } catch (error) {
     console.error("Error in roundArbitrageStakes:", error);
     throw error;
-  };
+  }
 }
 
 
