@@ -27,7 +27,14 @@ function transformSGOapi(event) {
       // As entries returns the key as the 0th index, value as 1st index
       if (!bookmakerData.available) return;
 
-      const line = odd.betTypeID === "sp" ? Number(bookmakerData.spread) : Number(bookmakerData.overUnder);
+      let line = null;
+
+      if (odd.betTypeID === "sp") {
+          line = Number(bookmakerData.spread);
+      } else if (odd.betTypeID === "ou") {
+          line = Number(bookmakerData.overUnder);
+      }
+      
 
       const eventBookmakerKey =
         `${event.eventID}_${bookmakerName}-${odd.betTypeID}-${odd.periodID}-${odd.statID}-${odd.statEntityID}-${line}`;
@@ -39,9 +46,6 @@ function transformSGOapi(event) {
         standardOdds.event_metadata = event_metadata;
 
         //extra grouping for ou etc.
-        standardOdds.periodID = odd.periodID;
-        standardOdds.statID = odd.statID;
-        standardOdds.statEntityID = odd.statEntityID;
         standardOdds.line = line;
 
         standardOddsManyBookmakers.set(eventBookmakerKey, standardOdds);
@@ -82,9 +86,9 @@ function transformSGOapi(event) {
 
             altStandardOdds.event_metadata = event_metadata;
 
-            altStandardOdds.periodID = odd.periodID;
+            /* altStandardOdds.periodID = odd.periodID;
             altStandardOdds.statID = odd.statID;
-            altStandardOdds.statEntityID = odd.statEntityID;
+            altStandardOdds.statEntityID = odd.statEntityID; */
             altStandardOdds.line = altLineValue;
 
             standardOddsManyBookmakers.set(
@@ -135,9 +139,9 @@ function transformSGOapi(event) {
               );
 
             altStandardOdds.event_metadata = event_metadata;
-            altStandardOdds.periodID = odd.periodID;
+            /* altStandardOdds.periodID = odd.periodID;
             altStandardOdds.statID = odd.statID;
-            altStandardOdds.statEntityID = odd.statEntityID;
+            altStandardOdds.statEntityID = odd.statEntityID; */
             altStandardOdds.line = altLineValue;
 
             standardOddsManyBookmakers.set(

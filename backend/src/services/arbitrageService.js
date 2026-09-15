@@ -209,6 +209,13 @@ function findArbitrageOpportunities(transformedOdds, bankroll) {
     return Math.min(profit, stake * odds[index]);
   }, Infinity) - bankroll;
   if (isArbitrage && guaranteedProfit / bankroll >= 0.02) {
+    const legs = Object.entries(bestOdds).map(([outcome, odd], index) => ({
+      outcome,
+      bookmaker: odd.bookmaker,
+      odds: odd.odds,
+      stake: stakes[index]
+    }));
+
     return {
       eventID: marketOdds[0].eventID,
       homeTeam: marketOdds[0].homeTeam,
@@ -218,6 +225,7 @@ function findArbitrageOpportunities(transformedOdds, bankroll) {
       line: marketOdds[0].line,
       isArbitrage: true,
       bestOdds: bestOdds,
+      legs,
 
       stakes,
       guaranteedProfit: guaranteedProfit,
