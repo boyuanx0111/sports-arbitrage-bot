@@ -7,15 +7,38 @@ const app = require("./app");
 
 const { PORT, SPORTSGAMEODDS } = require("./config");
 
-console.log(
-  "Sportsgameodds API key loaded:",
-  Boolean(SPORTSGAMEODDS.API_KEY)
-);
+const {
+  initialiseCaches,
+  startSlowRefresh,
+  startFastRefresh
+} = require("./services/cacheInitialisation");
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
 
+async function startServer() {
+
+  try {
+
+    await initialiseCaches();
+
+    startSlowRefresh();
+    startFastRefresh();
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+
+  } catch (error) {
+
+    console.error(
+      "Server initialisation failed:",
+      error
+    );
+
+    process.exit(1);
+  }
+}
+
+startServer();
 
 //debuug
 // const server = app.listen(PORT, () => {

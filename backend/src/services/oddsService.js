@@ -260,7 +260,7 @@ async function getOdds() {
         );
 
         return {
-            allOdds,
+            //allOdds,
             totalProfit,    // Also returned the total profit across all the events
             combinedArbitrageOpportunities
         };
@@ -273,6 +273,7 @@ async function getOdds() {
     }
 }
 
+//not actively linked
 async function getActiveLeagues() {
     const response = await axios.get(`${SPORTSGAMEODDS.BASE_URL}/leagues/`, {
         headers: {

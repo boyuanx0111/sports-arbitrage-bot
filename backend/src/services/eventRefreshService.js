@@ -3,7 +3,8 @@ const {
 } = require("./ukOddsApiService");
 
 const {
-    setEvents
+    setEvents,
+    getLastUpdated
 } = require("./eventCacheService");
 
 const axios = require("axios");
@@ -53,7 +54,7 @@ async function refreshUKEvents() {
 
     return {
         eventCount: eventsWithOdds.length,
-        updatedAt: new Date()
+        updatedAt: getLastUpdated("uk")
     };
 }
 
@@ -119,8 +120,8 @@ async function refreshSGOEvents() {
 
 
     return {
-        eventCount: allEvents.length,
-        updatedAt: new Date()
+        eventCount: cachedEvents.length,
+        updatedAt: getLastUpdated("sgo")
     };
 }
 
