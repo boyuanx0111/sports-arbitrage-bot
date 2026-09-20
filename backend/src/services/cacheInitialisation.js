@@ -11,15 +11,38 @@ const {
     logArbitrage
 } = require("../utils/arbLogger");
 
+const { SPORTSGAMEODDS, UKODDS } = require("../config");
+
+const providers = {
+    uk: Boolean(UKODDS.API_KEY),
+    sgo: Boolean(SPORTSGAMEODDS.API_KEY)
+};
+
+async function refreshConfiguredCaches() {
+    if (providers.uk) {
+        await refreshUKEvents();
+        console.log("UK event cache refreshed");
+    } else {
+        console.log("UK Odds API not configured; skipping UK event cache");
+    }
+
+    if (providers.sgo) {
+        await refreshSGOEvents();
+        console.log("SGO event cache refreshed");
+    } else {
+        console.log("SportsGameOdds not configured; skipping SGO event cache");
+    }
+}
+
 async function initialiseCaches() {
 
     console.log("Initialising event caches...");
 
-    await refreshUKEvents();
-    console.log("UK event cache initialised");
+    if (!providers.uk && !providers.sgo) {
+        throw new Error("No odds provider configured. Set SPORTSGAMEODDS_KEY and/or UKODDS_API_KEY.");
+    }
 
-    await refreshSGOEvents();
-    console.log("SGO event cache initialised");
+    await refreshConfiguredCaches();
 
     console.log("Event caches initialised");
 }
@@ -39,11 +62,7 @@ function startSlowRefresh() {
 
         try {
 
-            await refreshUKEvents();
-            console.log("UK event cache refreshed");
-
-            await refreshSGOEvents();
-            console.log("SGO event cache refreshed");
+            await refreshConfiguredCaches();
 
             console.log("Slow event refresh complete");
 

@@ -7,6 +7,7 @@ const oddsRoutes = require("./routes/odds");
 const arbitrageRoutes = require("./routes/arbitrage");
 
 const debugRoutes = require("./routes/debugRoutes");
+const simulationRoutes = require("./routes/simulations");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use("/health", healthRoutes);
 app.use("/odds", oddsRoutes);
 app.use("/arbitrage", arbitrageRoutes);
 app.use("/debug", debugRoutes);
+app.use("/simulations", simulationRoutes);
 
 //cache mount
 const cacheRoutes = require("./routes/cacheRoutes");
