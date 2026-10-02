@@ -1,11 +1,9 @@
 const { getOdds } = require("./oddsService");
 const { refreshSimulationEvents } = require("./eventRefreshService");
-const { resolveOddsEvent, schedule: scheduleSettlement } = require("./matchSettlementService");
 
 const DEFAULT_BANKROLL = 100;
 const DEFAULT_PLACEMENT_DELAY_MS = 2 * 60 * 1000;
 const DEFAULT_SCAN_INTERVAL_MS = 60 * 1000;
-const DEFAULT_SETTLEMENT_INTERVAL_MS = 60 * 1000;
 
 const state = {
   running: false,
@@ -18,14 +16,14 @@ const state = {
   opportunitiesDiscovered: 0,
   betsPlaced: 0,
   betsCancelled: 0,
-  betsSettled: 0,
+  betsSimulated: 0,
   opportunitiesSkipped: 0,
   pending: [],
   bets: [],
   timers: new Set(),
   scanTimer: null,
-  config: {}
-  ,scanInFlight: false
+  config: {},
+  scanInFlight: false
 };
 
 function number(value, fallback) {
@@ -38,8 +36,7 @@ function configure(options = {}) {
     bankroll: number(options.bankroll, number(process.env.SIMULATION_BANKROLL, DEFAULT_BANKROLL)),
     placementDelayMs: number(options.placementDelayMs, number(process.env.SIMULATION_PLACEMENT_DELAY_MS, DEFAULT_PLACEMENT_DELAY_MS)),
     scanIntervalMs: number(options.scanIntervalMs, number(process.env.SIMULATION_SCAN_INTERVAL_MS, DEFAULT_SCAN_INTERVAL_MS)),
-    settlementIntervalMs: number(options.settlementIntervalMs, number(process.env.SIMULATION_SETTLEMENT_INTERVAL_MS, DEFAULT_SETTLEMENT_INTERVAL_MS))
-    ,standardMatchWinnerOnly: options.standardMatchWinnerOnly !== undefined
+    standardMatchWinnerOnly: options.standardMatchWinnerOnly !== undefined
       ? options.standardMatchWinnerOnly !== false
       : process.env.SIMULATION_STANDARD_MATCH_WINNER_ONLY !== "false"
   };
@@ -126,63 +123,18 @@ async function attemptPlacement(pending) {
   const stake = (current.stakes || []).reduce((sum, value) => sum + Number(value || 0), 0);
   const bet = {
     ...pending,
-    status: "placed",
+    status: "simulated",
     placedAt: new Date().toISOString(),
     stake,
+    profit: Number(current.guaranteedProfit || 0),
+    assumedWinnings: Number(current.guaranteedProfit || 0),
     opportunity: snapshotOpportunity(current)
   };
   state.totalStaked += stake;
   state.betsPlaced += 1;
-  state.bets.unshift(bet);
-  const event = {
-    event_id: bet.opportunity.eventID,
-    home_team: bet.opportunity.homeTeam,
-    away_team: bet.opportunity.awayTeam,
-    competition: bet.opportunity.league,
-    kickoff_utc: bet.opportunity.startTime
-  };
-  try {
-    const match = await resolveOddsEvent(event);
-    bet.match = match;
-    if (match.api_football_fixture_id) {
-      scheduleSettlement(bet, event, result => settleFromResult(bet, result));
-    } else {
-      bet.status = match.settlement_status;
-    }
-  } catch (error) {
-    bet.status = "fixture_resolution_error";
-    bet.error = error.message;
-  }
-}
-
-function outcomeFor(bet) {
-  const supplied = bet.opportunity.result || bet.opportunity.winner || bet.opportunity.outcome;
-  if (typeof supplied === "string") return { outcome: supplied, source: "provider" };
-  const legs = bet.opportunity.legs || [];
-  if (!legs.length) return { outcome: null, source: "unavailable" };
-  // Provider transforms currently do not carry final scores/results. Keep the simulation moving
-  // while making the fallback explicit and repeatable for a given bet.
-  const index = [...String(bet.id)].reduce((sum, char) => sum + char.charCodeAt(0), 0) % legs.length;
-  return { outcome: legs[index].outcome, source: "simulation-fallback" };
-}
-
-function settleFromResult(bet, result) {
-  if (result.status !== "SETTLED") {
-    bet.resultStatus = result.status;
-    return;
-  }
-  const match = result.match;
-  const outcome = match.fulltime_home > match.fulltime_away ? "home" : match.fulltime_home < match.fulltime_away ? "away" : "draw";
-  const winningLeg = (bet.opportunity.legs || []).find(leg => leg.outcome === outcome);
-  const payout = winningLeg ? Number(winningLeg.stake || 0) * Number(winningLeg.odds || 0) : 0;
-  bet.status = "settled";
-  bet.settledAt = new Date().toISOString();
-  bet.winningOutcome = outcome;
-  bet.outcomeSource = "api-football";
-  bet.payout = payout;
-  bet.profit = payout - bet.stake;
   state.totalProfit += bet.profit;
-  state.betsSettled += 1;
+  state.betsSimulated += 1;
+  state.bets.unshift(bet);
 }
 
 function start(options = {}) {
@@ -220,7 +172,7 @@ function getStatus() {
     opportunitiesDiscovered: state.opportunitiesDiscovered,
     betsPlaced: state.betsPlaced,
     betsCancelled: state.betsCancelled,
-    betsSettled: state.betsSettled,
+    betsSimulated: state.betsSimulated,
     opportunitiesSkipped: state.opportunitiesSkipped,
     pending: state.pending,
     bets: state.bets,
