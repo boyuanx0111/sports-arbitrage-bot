@@ -117,7 +117,7 @@ async function getFootballEventsRange(from, to, league) {
                     odds_format: "decimal",
                     from,
                     to,
-                    league,
+                    ...(league ? { league } : {}),
                     upcoming: true
                 }
             }

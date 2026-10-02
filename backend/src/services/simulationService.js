@@ -1,4 +1,5 @@
 const { getOdds } = require("./oddsService");
+const { refreshSimulationEvents } = require("./eventRefreshService");
 const { resolveOddsEvent, schedule: scheduleSettlement } = require("./matchSettlementService");
 
 const DEFAULT_BANKROLL = 100;
@@ -77,6 +78,8 @@ async function scan() {
   state.scanInFlight = true;
   state.lastScanAt = new Date().toISOString();
   try {
+    // Simulation scans across every league currently exposed by the providers.
+    await refreshSimulationEvents();
     const result = await getOdds();
     const opportunities = result.combinedArbitrageOpportunities || [];
 

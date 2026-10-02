@@ -13,7 +13,6 @@ const {
     SPORTSGAMEODDS
 } = require("../config");
 
-
 //UK cache refresh service
 async function refreshUKEvents() {
 
@@ -125,8 +124,28 @@ async function refreshSGOEvents() {
     };
 }
 
+// Simulation-only refresh: use the UK provider across all leagues instead of
+// the deliberately narrow production MLS configuration.
+async function refreshSimulationEvents() {
+    const today = new Date();
+    const fiveDaysLater = new Date(today);
+    fiveDaysLater.setDate(fiveDaysLater.getDate() + 5);
+    const from = today.toISOString().split("T")[0];
+    const to = fiveDaysLater.toISOString().split("T")[0];
+
+    // Simulation is intentionally UK-only. Clear any previously populated SGO
+    // cache so the shared odds pipeline cannot include SGO opportunities.
+    setEvents("sgo", []);
+
+    if (process.env.UKODDS_API_KEY) {
+        const response = await getFootballEventsRange(from, to);
+        setEvents("uk", (response.events || []).filter(event => event.markets_with_odds > 0));
+    }
+}
+
 
 module.exports = {
     refreshUKEvents,
-    refreshSGOEvents
+    refreshSGOEvents,
+    refreshSimulationEvents
 };
