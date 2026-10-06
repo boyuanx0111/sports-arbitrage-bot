@@ -33,10 +33,9 @@ function sleep(ms) {
 }
 
 // fetch odds from ukapiservice
-async function getUKOdds() {
+async function getUKOdds(events = getEvents("uk")) {
     // Read UK fixtures from event cache
-    const eventsWithOdds =
-        getEvents("uk");
+    const eventsWithOdds = events;
 
     // Allow the odds endpoint to continue when the UK cache is empty; treat it as no UK data.
     if (eventsWithOdds.length === 0) {
@@ -107,7 +106,7 @@ async function getUKOdds() {
     };
 }
 
-async function getOdds() {
+async function getOdds(options = {}) {
 
     try {
         // // raw fetch for each league
@@ -137,19 +136,20 @@ async function getOdds() {
         // SPORTSGAMEODDS.LEAGUES.forEach((league, index) => {
         //     eventsByLeague[league.leagueID] = responses[index].data.data;
         // });
-
+        const simulationEventsProvided = Array.isArray(options.ukEvents);
+        if (!simulationEventsProvided) {
+            refreshEvents(); // Regular endpoint: refresh shared SGO and UK event caches.
+        }
         // read from cache instead of direct fetch above (just keeping to show you get rid once you see ^)@pandley
-        const cachedSGOEvents =
-            getEvents("sgo");
+        const cachedSGOEvents = simulationEventsProvided ? [] : getEvents("sgo");
 
-        const cachedUKEvents =
-            getEvents("uk");
+        const cachedUKEvents = simulationEventsProvided ? options.ukEvents : getEvents("uk");
 
         console.log(`Cached SGO events: ${cachedSGOEvents.length}`);
         console.log(`Cached UK events: ${cachedUKEvents.length}`);
 
         // Allow the odds endpoint to continue when only one data source is populated.
-        if (cachedSGOEvents.length === 0 && cachedUKEvents.length === 0) {
+        if (!simulationEventsProvided && cachedSGOEvents.length === 0 && cachedUKEvents.length === 0) {
             throw new Error(
                 "SGO and UK event cache is empty. Refresh event cache before scanning odds."
             );
@@ -177,7 +177,7 @@ async function getOdds() {
 
         if (cachedUKEvents.length > 0) {
             // Fetch and transform UK Odds API data
-            const ukOddsData = await getUKOdds();
+            const ukOddsData = await getUKOdds(cachedUKEvents);
 
             const transformedUKEvents = ukOddsData.oddsResponses.map(transformUKOddsAPI);
 
@@ -289,7 +289,31 @@ async function getActiveLeagues() {
     return { activeLeagues, supportedActiveLeagues };
 }
 
+async function refreshEvents() {
+    try {
+        const response = await fetch(
+            "http://localhost:3000/cache/refresh-events",
+            {
+                method: "POST"
+            }
+        );
+    } catch (error) {
+        console.error("Error refreshing UK events:", error);
+    }
+    try {
+        const response = await fetch(
+            "http://localhost:3000/cache/refresh-sgo-events",
+            {
+                method: "POST"
+            }
+        );
+    } catch (error) {
+        console.error("Error refreshing SGO events:", error);
+    }
+}
+
 module.exports = {
     getOdds,
-    getActiveLeagues
+    getActiveLeagues,
+    refreshEvents
 };

@@ -1,5 +1,16 @@
 const unibet = require("./sportsbooks/unibet");
 
+// Keep an opportunity reserved before placing either leg. This also prevents
+// overlapping scans from starting the same pair of bets concurrently.
+const handledOpportunities = new Set();
+
+function getOpportunityKey(opportunity) {
+    const event = opportunity.eventID || opportunity.eventKey ||
+        `${opportunity.homeTeam || ""}:${opportunity.awayTeam || ""}:${opportunity.startTime || ""}`;
+    const market = opportunity.marketKey || opportunity.marketType || opportunity.market || "unknown-market";
+    return `${event}::${market}`.toLowerCase();
+}
+
 async function routeJob(job) {
 
     switch (job.bookmaker) {
@@ -14,6 +25,13 @@ async function routeJob(job) {
 }
 
 async function executeOpportunity(opportunity) {
+
+    const opportunityKey = getOpportunityKey(opportunity);
+    if (handledOpportunities.has(opportunityKey)) {
+        console.log(`Skipping already handled arbitrage opportunity: ${opportunityKey}`);
+        return { skipped: true, reason: "duplicate-opportunity" };
+    }
+    handledOpportunities.add(opportunityKey);
 
     console.log(opportunity);
 
@@ -35,6 +53,7 @@ async function executeOpportunity(opportunity) {
         ].filter(Boolean);
 
     if (legs.length !== 2) {
+        handledOpportunities.delete(opportunityKey);
         throw new Error("Automatic execution currently supports exactly two legs");
     }
 

@@ -23,7 +23,12 @@ const state = {
   timers: new Set(),
   scanTimer: null,
   config: {},
-  scanInFlight: false
+  scanInFlight: false,
+  eventRefreshTimer: null,
+  eventRefreshInFlight: false,
+  eventRefreshPromise: null,
+  simulationEvents: [],
+  simulationEventsUpdatedAt: null
 };
 
 function number(value, fallback) {
@@ -48,7 +53,15 @@ function snapshotOpportunity(opportunity) {
 }
 
 function sameOpportunity(a, b) {
-  return a && b && a.eventID === b.eventID && a.marketKey === b.marketKey;
+  if (!a || !b) return false;
+  const eventA = a.eventID || a.eventKey;
+  const eventB = b.eventID || b.eventKey;
+  return eventA === eventB && a.marketKey === b.marketKey;
+}
+
+function hasSimulatedOpportunity(opportunity, excluding = null) {
+  return state.bets.some(item => item !== excluding &&
+    sameOpportunity(item.opportunity, opportunity) && item.status === "simulated");
 }
 
 function isStandardMatchWinner(opportunity) {
@@ -75,9 +88,10 @@ async function scan() {
   state.scanInFlight = true;
   state.lastScanAt = new Date().toISOString();
   try {
-    // Simulation scans across every league currently exposed by the providers.
-    await refreshSimulationEvents();
-    const result = await getOdds();
+    // Refresh the broad event ID list once daily; fetch fresh odds for those IDs
+    // during every scan.
+    await ensureSimulationEventsFresh();
+    const result = await getOdds({ ukEvents: state.simulationEvents });
     const opportunities = result.combinedArbitrageOpportunities || [];
 
     for (const opportunity of opportunities) {
@@ -86,7 +100,7 @@ async function scan() {
         continue;
       }
       const alreadyTracked = state.pending.some(item => sameOpportunity(item.opportunity, opportunity)) ||
-        state.bets.some(item => sameOpportunity(item.opportunity, opportunity) && ["pending", "placed"].includes(item.status));
+        state.bets.some(item => sameOpportunity(item.opportunity, opportunity) && ["pending", "placed", "simulated"].includes(item.status));
       if (alreadyTracked) continue;
 
       state.opportunitiesDiscovered += 1;
@@ -110,7 +124,17 @@ async function attemptPlacement(pending) {
   if (index !== -1) state.pending.splice(index, 1);
   if (!state.running) return;
 
-  const fresh = await getOdds();
+  // A second pending copy may already have reached placement (for example,
+  // after a stop/start). Never simulate the same event and market twice.
+  if (hasSimulatedOpportunity(pending.opportunity)) {
+    pending.status = "duplicate";
+    pending.cancelledAt = new Date().toISOString();
+    state.opportunitiesSkipped += 1;
+    state.bets.unshift(pending);
+    return;
+  }
+
+  const fresh = await getOdds({ ukEvents: state.simulationEvents });
   const current = (fresh.combinedArbitrageOpportunities || []).find(item => sameOpportunity(item, pending.opportunity));
   if (!current) {
     pending.status = "cancelled";
@@ -120,14 +144,27 @@ async function attemptPlacement(pending) {
     return;
   }
 
+  if (hasSimulatedOpportunity(current)) {
+    pending.status = "duplicate";
+    pending.cancelledAt = new Date().toISOString();
+    state.opportunitiesSkipped += 1;
+    state.bets.unshift(pending);
+    return;
+  }
+
   const stake = (current.stakes || []).reduce((sum, value) => sum + Number(value || 0), 0);
+  const minimumProfit = Number(current.minimumProfit ?? current.guaranteedProfit);
+  const assumedWinnings = Number.isFinite(minimumProfit)
+    ? minimumProfit
+    : Number(current.guaranteedProfit || 0);
   const bet = {
     ...pending,
     status: "simulated",
     placedAt: new Date().toISOString(),
     stake,
-    profit: Number(current.guaranteedProfit || 0),
-    assumedWinnings: Number(current.guaranteedProfit || 0),
+    profit: assumedWinnings,
+    assumedWinnings,
+    resultDetection: "Assumed winnings are set to minimumProfit; match results are not checked.",
     opportunity: snapshotOpportunity(current)
   };
   state.totalStaked += stake;
@@ -143,6 +180,16 @@ function start(options = {}) {
   state.running = true;
   state.startedAt = new Date().toISOString();
   state.lastError = null;
+  ensureSimulationEventsFresh().catch(error => {
+    state.lastError = error.message;
+    console.error("Simulation event refresh failed:", error);
+  });
+  state.eventRefreshTimer = setInterval(() => {
+    ensureSimulationEventsFresh(true).catch(error => {
+      state.lastError = error.message;
+      console.error("Simulation event refresh failed:", error);
+    });
+  }, 24 * 60 * 60 * 1000);
   const run = async () => {
     try { await scan(); } catch (error) { state.lastError = error.message; console.error("Simulation scan failed:", error); }
   };
@@ -154,7 +201,9 @@ function start(options = {}) {
 function stop() {
   state.running = false;
   if (state.scanTimer) clearInterval(state.scanTimer);
+  if (state.eventRefreshTimer) clearInterval(state.eventRefreshTimer);
   state.scanTimer = null;
+  state.eventRefreshTimer = null;
   for (const timer of state.timers) clearTimeout(timer);
   state.timers.clear();
   return getStatus();
@@ -176,8 +225,29 @@ function getStatus() {
     opportunitiesSkipped: state.opportunitiesSkipped,
     pending: state.pending,
     bets: state.bets,
-    config: state.config
+    config: state.config,
+    cachedEventCount: state.simulationEvents.length,
+    cachedEventIDs: state.simulationEvents.map(event => event.event_id),
+    eventCacheUpdatedAt: state.simulationEventsUpdatedAt,
+    assumedWinningsRule: "minimumProfit; no match-result detection is performed"
   };
+}
+
+async function ensureSimulationEventsFresh(force = false) {
+  if (state.eventRefreshPromise) return state.eventRefreshPromise;
+  const lastUpdated = state.simulationEventsUpdatedAt;
+  if (!force && lastUpdated && Date.now() - lastUpdated.getTime() < 24 * 60 * 60 * 1000) return;
+  state.eventRefreshInFlight = true;
+  state.eventRefreshPromise = refreshSimulationEvents().then(result => {
+    state.simulationEvents = result.events || [];
+    state.simulationEventsUpdatedAt = result.updatedAt;
+    return result;
+  });
+  try { await state.eventRefreshPromise; }
+  finally {
+    state.eventRefreshInFlight = false;
+    state.eventRefreshPromise = null;
+  }
 }
 
 configure();

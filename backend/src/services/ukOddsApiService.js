@@ -104,7 +104,7 @@ async function getEventOddsBatch(eventIDs) {
     }
 }
 
-async function getFootballEventsRange(from, to, league) {
+async function getFootballEventsRange(from, to, league, options = {}) {
     try {
         const response = await axios.get(
             `${UKODDS.BASE_URL}/v1/football/events`,
@@ -115,10 +115,14 @@ async function getFootballEventsRange(from, to, league) {
                 params: {
                     package: "core",
                     odds_format: "decimal",
+                    schedule_date: options.scheduleDate || from,
+                    per_page: options.perPage || 25,
+                    ...(options.page ? { page: options.page } : {}),
                     from,
                     to,
                     ...(league ? { league } : {}),
-                    upcoming: true
+                    upcoming: options.upcoming !== false,
+                    has_odds: options.hasOdds !== false
                 }
             }
         );

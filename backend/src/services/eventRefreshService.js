@@ -12,15 +12,17 @@ const axios = require("axios");
 const {
     SPORTSGAMEODDS
 } = require("../config");
+const { UKODDS } = require("../config");
 
 //UK cache refresh service
 async function refreshUKEvents() {
 
     const today = new Date();
+    const NumberOfDays = 5;
 
     const oneWeekLater = new Date(today);
     oneWeekLater.setDate(
-        oneWeekLater.getDate() + 5
+        oneWeekLater.getDate() + NumberOfDays
     );
 
     const from =
@@ -124,23 +126,48 @@ async function refreshSGOEvents() {
     };
 }
 
-// Simulation-only refresh: use the UK provider across all leagues instead of
-// the deliberately narrow production MLS configuration.
+// Refresh the simulation's own UK event list. Keep it separate from the shared
+// event cache used by the regular odds route.
 async function refreshSimulationEvents() {
     const today = new Date();
-    const fiveDaysLater = new Date(today);
-    fiveDaysLater.setDate(fiveDaysLater.getDate() + 5);
+    const fourDaysLater = new Date(today);
+    fourDaysLater.setDate(fourDaysLater.getDate() + 4);
     const from = today.toISOString().split("T")[0];
-    const to = fiveDaysLater.toISOString().split("T")[0];
+    const to = fourDaysLater.toISOString().split("T")[0];
 
-    // Simulation is intentionally UK-only. Clear any previously populated SGO
-    // cache so the shared odds pipeline cannot include SGO opportunities.
-    setEvents("sgo", []);
+    if (UKODDS.API_KEY) {
+        const perPage = 25;
+        const events = [];
+        let page = 1;
+        let pageEvents;
 
-    if (process.env.UKODDS_API_KEY) {
-        const response = await getFootballEventsRange(from, to);
-        setEvents("uk", (response.events || []).filter(event => event.markets_with_odds > 0));
+        do {
+            const response = await getFootballEventsRange(from, to, undefined, {
+                scheduleDate: from,
+                perPage,
+                page,
+                upcoming: true,
+                hasOdds: true
+            });
+            pageEvents = response.events || response.data || [];
+            events.push(...pageEvents);
+            page += 1;
+        } while (pageEvents.length === perPage);
+
+        const uniqueEvents = Array.from(
+            new Map(events.filter(event => event.event_id).map(event => [event.event_id, event])).values()
+        );
+        return {
+            events: uniqueEvents,
+            eventCount: uniqueEvents.length,
+            eventIDs: uniqueEvents.map(event => event.event_id),
+            from,
+            to,
+            updatedAt: new Date()
+        };
     }
+
+    throw new Error("UK Odds API is not configured for the simulation event search.");
 }
 
 
