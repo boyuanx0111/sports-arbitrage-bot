@@ -304,11 +304,7 @@ function transformUKOddsAPI(event) {
 
       // ASIAN HANDICAP
       if (marketType === "sp") {
-
-        const outcomesByLine = new Map();
-
         for (const outcome of bookmaker.outcomes) {
-
           const numericLine = Number(outcome.line);
 
           if (!Number.isFinite(numericLine)) {
@@ -316,18 +312,6 @@ function transformUKOddsAPI(event) {
           }
 
           const line = numericLine.toString();
-
-          if (!outcomesByLine.has(line)) {
-            outcomesByLine.set(line, []);
-          }
-
-          outcomesByLine.get(line).push({
-            outcome: outcome.outcome,
-            odds: outcome.odds
-          });
-        }
-
-        for (const [line, outcomes] of outcomesByLine) {
 
           transformed.push({
             eventID: eventMetadata.eventID,
@@ -342,7 +326,11 @@ function transformUKOddsAPI(event) {
 
             marketType,
             line,
-            outcomes
+            outcomes: [{
+              outcome: outcome.outcome,
+              odds: outcome.odds
+            }]
+            // outcome pushed as single element array later matched by createmarketkey correctly, no longer stored as outcome by line
           });
         }
 
@@ -502,7 +490,7 @@ function createMarketKey(standardOdds) {
       return null;
     }
 
-    // Normalize the market from the home team's perspective:
+    // Normalise the market from the home team's perspective:
     //
     // home -0.5 + away +0.5 -> sp|-0.5
     // home +0.5 + away -0.5 -> sp|0.5
@@ -551,4 +539,3 @@ module.exports = {
 };
 
 //small reusable helper functions
-// This function requires some testing
