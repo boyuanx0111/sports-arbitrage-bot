@@ -1,3 +1,4 @@
+// IN DEVELOPMENT: Unibet browser automation is a work in progress.
 const { getBrowserContext } = require("../browsers/browserManager");
 const unibetSelectors = require("../selectors/unibetSelector");
 

@@ -1,3 +1,4 @@
+// IN DEVELOPMENT: Manual keep-alive check; this is not part of the automated test suite.
 const {
     launchUnibet
 } = require("../sportsbooks/unibet");

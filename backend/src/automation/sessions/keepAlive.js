@@ -1,3 +1,4 @@
+// IN DEVELOPMENT: Session keep-alive behavior is experimental.
 async function refreshSession(page) {
 
     try {

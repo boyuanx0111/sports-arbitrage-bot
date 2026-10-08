@@ -1,3 +1,4 @@
+// IN DEVELOPMENT: Playwright configuration is a scaffold; project E2E coverage is not set up yet.
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
 
@@ -78,4 +79,3 @@ export default defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
-

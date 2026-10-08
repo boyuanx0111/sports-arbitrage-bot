@@ -1,3 +1,4 @@
+// IN DEVELOPMENT: Login/session detection is experimental and needs broader validation.
 async function checkLoggedIn(page) {
 
     try {

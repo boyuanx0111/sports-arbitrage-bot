@@ -1,3 +1,4 @@
+// IN DEVELOPMENT: Manual selector check; this is not part of the automated test suite.
 const {
     launchUnibet,
     search,

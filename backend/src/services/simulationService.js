@@ -1,5 +1,6 @@
 const { getOdds } = require("./oddsService");
 const { refreshSimulationEvents } = require("./eventRefreshService");
+const { processArbNotifs, resetNotificationState } = require("./notificationPreprocessing");
 
 const DEFAULT_BANKROLL = 100;
 const DEFAULT_PLACEMENT_DELAY_MS = 2 * 60 * 1000;
@@ -92,13 +93,30 @@ async function scan() {
     // during every scan.
     await ensureSimulationEventsFresh();
     const result = await getOdds({ ukEvents: state.simulationEvents });
-    const opportunities = result.combinedArbitrageOpportunities || [];
+    if (!result || !Array.isArray(result.combinedArbitrageOpportunities)) {
+      throw new Error("Odds scan returned an incomplete arbitrage opportunity list.");
+    }
+    const opportunities = result.combinedArbitrageOpportunities;
+    const qualifyingOpportunities = [];
 
     for (const opportunity of opportunities) {
       if (state.config.standardMatchWinnerOnly && !isStandardMatchWinner(opportunity)) {
         state.opportunitiesSkipped += 1;
         continue;
       }
+      qualifyingOpportunities.push(opportunity);
+    }
+
+    const filteredTotalProfit = qualifyingOpportunities.reduce(
+      (sum, opportunity) => sum + Number(opportunity.guaranteedProfit || 0),
+      0
+    );
+    // Notification delivery is isolated from the simulation scan and placement flow.
+    processArbNotifs(qualifyingOpportunities, filteredTotalProfit).catch(error => {
+      console.error("Discord arbitrage notification processing failed:", error.message);
+    });
+
+    for (const opportunity of qualifyingOpportunities) {
       const alreadyTracked = state.pending.some(item => sameOpportunity(item.opportunity, opportunity)) ||
         state.bets.some(item => sameOpportunity(item.opportunity, opportunity) && ["pending", "placed", "simulated"].includes(item.status));
       if (alreadyTracked) continue;
@@ -177,6 +195,7 @@ async function attemptPlacement(pending) {
 function start(options = {}) {
   if (state.running) return getStatus();
   configure(options);
+  resetNotificationState();
   state.running = true;
   state.startedAt = new Date().toISOString();
   state.lastError = null;

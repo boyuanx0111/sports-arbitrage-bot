@@ -1,3 +1,4 @@
+// IN DEVELOPMENT: Persistent browser context lifecycle still needs production hardening.
 const { chromium } = require("playwright");
 
 const contexts = {};

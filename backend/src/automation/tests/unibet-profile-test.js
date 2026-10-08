@@ -1,3 +1,4 @@
+// IN DEVELOPMENT: Manual browser profile check; this is not part of the automated test suite.
 const { launchUnibet } = require("../sportsbooks/unibet");
 
 async function test() {

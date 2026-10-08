@@ -8,7 +8,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "test": "node --test tests/*.test.js"
   },
   "dependencies": {
     "axios": "^1.19.0",
@@ -16,8 +17,8 @@
     "express": "^5.2.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.61.1",
-    "@types/node": "^26.1.1",
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^26.6.4",
     "nodemon": "^3.1.14"
   }
 }

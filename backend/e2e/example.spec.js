@@ -1,3 +1,4 @@
+// IN DEVELOPMENT: These are Playwright starter examples, not project E2E tests.
 // @ts-check
 import { test, expect } from '@playwright/test';
 
