@@ -1,9 +1,9 @@
 {
-  "name": "backend",
+  "name": "sports-arbitrage-bot-backend",
   "version": "1.0.0",
-  "description": "Sports Arbitrage Bot Backend",
-  "license": "ISC",
-  "author": "",
+  "description": "Sports arbitrage opportunity detection and simulation backend",
+  "license": "MIT",
+  "author": "Brian Xu, Abhinav Pandley",
   "type": "commonjs",
   "main": "server.js",
   "scripts": {

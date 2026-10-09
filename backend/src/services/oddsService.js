@@ -32,6 +32,18 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+const UK_ODDS_BATCH_SIZE = 50;
+
+function chunk(items, size) {
+    const chunks = [];
+
+    for (let index = 0; index < items.length; index += size) {
+        chunks.push(items.slice(index, index + size));
+    }
+
+    return chunks;
+}
+
 // fetch odds from ukapiservice
 async function getUKOdds(events = getEvents("uk")) {
     // Read UK fixtures from event cache
@@ -46,7 +58,7 @@ async function getUKOdds(events = getEvents("uk")) {
         };
     }
 
-    // Collect fixture IDs and fetch their odds in one batch request via batch endpoint on ukoddsapi
+    // The UK Odds API accepts at most 50 event IDs per batch request.
     const eventIDs = eventsWithOdds.map(
         event => event.event_id
     );
@@ -54,48 +66,43 @@ async function getUKOdds(events = getEvents("uk")) {
     let oddsResponses = [];
 
     if (eventIDs.length > 0) {
-        try {
-            const batchResponse =
-                await getEventOddsBatch(eventIDs);
+        const eventIDBatches = chunk(eventIDs, UK_ODDS_BATCH_SIZE);
 
-            oddsResponses =
-                Object.values(batchResponse.odds || {});
+        for (const [batchIndex, eventIDBatch] of eventIDBatches.entries()) {
+            let batchResponse;
 
-            console.log(
-                `UK batch success: returned ${oddsResponses.length}/${eventIDs.length} events`
-            );
+            try {
+                batchResponse = await getEventOddsBatch(eventIDBatch);
+            } catch (error) {
+                const apiError = error.response?.data?.error;
 
-        } catch (error) {
-            const apiError = error.response?.data?.error;
+                // Only retry if UK Odds API specifically rate limited us.
+                if (apiError?.code !== "rate_limit_exceeded") {
+                    throw error;
+                }
 
-            // Only retry if UK Odds API specifically rate limited us
-            if (apiError?.code !== "rate_limit_exceeded") {
-                throw error;
+                const retryAfter =
+                    Number(error.response?.headers?.["retry-after"]) || 5;
+
+                console.log(
+                    `UK batch ${batchIndex + 1}/${eventIDBatches.length} rate limited, waiting ${retryAfter}s...`
+                );
+
+                await sleep((retryAfter + 1) * 1000);
+
+                console.log(
+                    `UK batch: retrying ${eventIDBatch.length} events...`
+                );
+
+                // Retry this batch once.
+                batchResponse = await getEventOddsBatch(eventIDBatch);
             }
 
-            // Retry-After header supplied by the API
-            const retryAfter =
-                Number(error.response?.headers?.["retry-after"]) || 5;
+            const batchOddsResponses = Object.values(batchResponse.odds || {});
+            oddsResponses.push(...batchOddsResponses);
 
             console.log(
-                `UK batch rate limited, waiting ${retryAfter}s...`
-            );
-
-            await sleep((retryAfter + 1) * 1000);
-
-            console.log(
-                `UK batch: retrying ${eventIDs.length} events...`
-            );
-
-            // Retry the batch once
-            const batchResponse =
-                await getEventOddsBatch(eventIDs);
-
-            oddsResponses =
-                Object.values(batchResponse.odds || {});
-
-            console.log(
-                `UK batch retry success: returned ${oddsResponses.length}/${eventIDs.length} events`
+                `UK batch ${batchIndex + 1}/${eventIDBatches.length} success: returned ${batchOddsResponses.length}/${eventIDBatch.length} events`
             );
         }
     }
