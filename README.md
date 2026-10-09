@@ -1,356 +1,107 @@
 # Sports Arbitrage Bot
 
-> An automated sports arbitrage betting system that identifies profitable arbitrage opportunities across multiple sportsbooks and executes both sides of the wager.
+A proof of concept for finding sports betting arbitrage and tracking hypothetical placements. **UKOddsAPI is the primary odds source for the simulation:** it supplies the football event list and fresh prices used during scans and placement checks. SportsGameOdds is an optional additional source for the shared odds scan. The simulation filters opportunities, waits before placement, and checks whether an opportunity is still available before recording a simulated bet. It does not place real bets or determine match results.
 
-> **⚠️ Disclaimer:** This project is for educational and research purposes only. Users are responsible for complying with all applicable laws and sportsbook terms of service.
-
----
-
-# Current Status
-
-**Current Phase:** Phase 2 – Backend Foundation ✅
-
-### Completed
-
-* Express.js backend
-* React (Vite) frontend
-* Layered backend architecture
-* Health check endpoint
-* Placeholder odds endpoint
-* GitHub version control
-
-### Next
-
-* Integrate a live odds API
-* Build the arbitrage calculation engine
-
----
-
-# Features
+**Discord is the intended output for the simulation.** The scanner sends a Discord webhook report when actionable opportunities appear or disappear, including the current opportunity details and total theoretical guaranteed profit.
 
 ## Current
 
-* Express.js backend API
-* React frontend
-* Modular backend architecture
-* Health endpoint
-* Placeholder odds endpoint
-* Scalable project structure
+- Uses UKOddsAPI as the primary simulation event and odds source; SportsGameOdds can contribute to the shared odds scan.
+- Converts provider responses into a shared odds format and finds arbitrage opportunities.
+- Runs a configurable simulation through the `/simulations` API.
+- Keeps event and odds caches in memory; simulated history is also in memory and resets when the server restarts.
+- Provides health, odds, arbitrage calculation, cache, and debug endpoints.
 
-## Planned
+The simulation is operated through the API. UKOddsAPI is required for simulation event discovery. 
 
-* Live odds retrieval
-* Arbitrage detection
-* Stake calculation
-* Browser automation with Playwright
-* Live dashboard
-* Profit tracking
-* Betting history
-* Notifications
+## Simulation flow
 
----
+1. Start the backend npm run dev
+2. Start the simulation with `POST /simulations/start`.
+3. The service refreshes its own UK event list and scans fresh odds at the configured interval.
+4. Each newly discovered opportunity waits for the placement delay, to try to prevent unstable arbs. Before recording it, the service fetches odds again; missing or duplicate opportunities are cancelled or skipped.
+5. A surviving opportunity is recorded as `simulated`. Profit is assumed from the opportunity's `minimumProfit`; match outcomes are not checked due to nature of arbitrage bet.
 
-# How It Works
+During each scan, actionable opportunity changes are also sent to Discord. Configure `DISCORD_WEBHOOK_URL` in `backend/.env` to receive these reports. Set `DISCORD_NOTIFICATIONS_ENABLED=false` to disable delivery. Delivery is queued and retried, and long reports are split to fit Discord message limits. Without a webhook URL, simulation and placement continue but no Discord message can be delivered.
 
-The completed application will continuously monitor supported sportsbooks for arbitrage opportunities.
+The simulation starts with a bankroll setting, but current opportunity stake calculations are made by the arbitrage scan with a fixed £100 bankroll. The displayed simulation bankroll is configuration/status data and is not yet used to scale those stakes.
 
-The planned workflow is:
+## Getting started
 
-1. Fetch the latest odds from supported sportsbooks
-2. Detect arbitrage opportunities
-3. Calculate the optimal stake for each outcome
-4. Automatically place both bets (optional)
-5. Record betting history and profit
-
-The current version establishes the project architecture that future phases will build upon.
-
----
-
-# Tech Stack
-
-| Component          | Technology               |
-| ------------------ | ------------------------ |
-| Backend            | Node.js, Express.js      |
-| Frontend           | React, Vite              |
-| Package Manager    | npm                      |
-| Version Control    | Git & GitHub             |
-| Odds Data          | The Odds API *(planned)* |
-| Browser Automation | Playwright *(planned)*   |
-
----
-
-# Project Structure
-
-```text
-sports-arb-bot/
-│
-├── backend/
-│   ├── src/
-│   │   ├── app.js
-│   │   ├── server.js
-│   │   │
-│   │   ├── routes/
-│   │   │   ├── health.js
-│   │   │   ├── odds.js
-│   │   │   ├── arbitrage.js
-│   │   │   └── bookmakers.js
-│   │   │
-│   │   ├── controllers/
-│   │   │   ├── healthController.js
-│   │   │   ├── oddsController.js
-│   │   │   ├── arbitrageController.js
-│   │   │   └── bookmakersController.js
-│   │   │
-│   │   ├── services/
-│   │   │   ├── healthService.js
-│   │   │   ├── oddsService.js
-│   │   │   ├── arbitrageService.js
-│   │   │   ├── bookmakerService.js
-│   │   │   └── betService.js
-│   │   │
-│   │   ├── config/
-│   │   │   └── index.js
-│   │   │
-│   │   ├── utils/
-│   │   │   ├── helpers.js
-│   │   │   ├── oddsConverter.js
-│   │   │   └── stakeCalculator.js
-│   │   │
-│   │   └── data/
-│   │       └── supportedBookmakers.js
-│   │
-│   ├── package.json
-│   └── package-lock.json
-│
-├── frontend/
-│   └── src/
-│
-├── docs/
-│
-├── .github/
-│   └── workflows/
-│
-├── .gitignore
-└── README.md
-```
-
----
-
-# Backend Architecture
-
-The backend follows a layered architecture to keep responsibilities separated and the codebase easy to extend.
-
-```text
-Frontend
-    │
-    ▼
-Routes
-    │
-    ▼
-Controllers
-    │
-    ▼
-Services
-    │
-    ▼
-Odds API / Business Logic
-```
-
-### Routes
-
-Define the application's API endpoints.
-
-Examples:
-
-* `/health`
-* `/odds`
-* `/arbitrage`
-
-Routes simply direct incoming requests to the appropriate controller.
-
----
-
-### Controllers
-
-Handle HTTP requests and responses.
-
-Responsibilities include:
-
-* Receiving requests
-* Reading parameters or request data
-* Calling the appropriate service
-* Returning JSON responses
-
-Controllers coordinate the request but contain very little business logic.
-
----
-
-### Services
-
-Contain the application's business logic.
-
-Examples include:
-
-* Fetching odds from external APIs
-* Detecting arbitrage opportunities
-* Calculating optimal stake sizes
-* Placing bets
-* Managing bookmaker interactions
-
-Most of the project's functionality will be implemented within this layer.
-
----
-
-### Config
-
-Stores application configuration such as:
-
-* Server port
-* API keys
-* Refresh intervals
-
----
-
-### Utils
-
-Contains reusable helper functions shared across the application.
-
-Examples include:
-
-* Odds conversion
-* Stake calculations
-* Date formatting
-* General utility functions
-
----
-
-# Roadmap
-
-## Development Roadmap
-
-### Phase 1 — Project Setup -- COMPLETE
-- Initialise GitHub repository
-- Set up backend (Node.js + Express)
-- Set up frontend (React + Vite)
-- Configure project structure
-- Install dependencies and development tools
-
-### Phase 2 — Backend Foundation -- COMPLETE
-- Configure Express server
-- Create routes, controllers and services
-- Add middleware and logging
-- Build initial API structure
-- Verify backend with development server
-
-### Phase 3 — Arbitrage Detection Engine
-- Build arbitrage calculation logic
-- Create calculation utilities
-- Develop arbitrage API endpoint
-- Validate requests and responses
-- Test with Postman
-- Add unit tests
-
-### Phase 4 — Sportsbook Integration
-- Connect to live odds sources
-- Standardise bookmaker data
-- Retrieve and compare odds
-- Feed live odds into the arbitrage engine
-
-### Phase 5 — Browser Automation
-- Integrate Playwright
-- Log in to supported sportsbooks
-- Navigate betting markets
-- Place bets automatically
-- Handle errors and confirmations
-
-### Phase 6 — Frontend Dashboard
-- Build React dashboard
-- Display live arbitrage opportunities
-- Show betting history and profit
-- Add bot controls and status monitoring
-
-### Phase 7 — Database & Persistence
-- Store betting history
-- Save arbitrage opportunities
-- Track profit and performance
-- Manage application settings
-
-### Phase 8 — Testing & Deployment
-- End-to-end testing
-- Improve error handling
-- Optimise performance
-- Prepare production deployment
-- Complete documentation
-
----
-
-# Installation
-
-Clone the repository:
+Requirements: Node.js and npm.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/sports-arbitrage-bot.git
-cd sports-arbitrage-bot
-```
-
-Install backend dependencies:
-
-```bash
-cd backend
+git clone https://github.com/boyuanx0111/sports-arbitrage-bot.git
+cd sports-arbitrage-bot/backend
 npm install
+cp .env.example .env
 ```
 
-Install frontend dependencies:
+In Windows PowerShell, use `Copy-Item .env.example .env` instead of `cp`.
+
+Edit `backend/.env` and add your `UKODDS_API_KEY`. This key is required to run the simulation. Add `SPORTSGAMEODDS_KEY` if you also want that provider included in the shared odds scan, then start the backend:
 
 ```bash
-cd ../frontend
-npm install
-```
-
-Run the backend:
-
-```bash
-cd backend
 npm run dev
 ```
 
-Run the frontend:
+The backend listens on port `3000` by default. At least one provider key is needed to start the backend; the simulation specifically requires `UKODDS_API_KEY`.
 
-```bash
-cd frontend
-npm run dev
+## Configuration
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `PORT` | `3000` | Backend port |
+| `UKODDS_API_KEY` | — | Primary simulation data source; required for simulation event discovery and scans |
+| `SPORTSGAMEODDS_KEY` | — | Optional additional provider for the shared odds scan |
+| `UKODDS_BASE_URL` | `https://api.ukoddsapi.com` | UKOddsAPI base URL |
+| `SIMULATION_BANKROLL` | `100` | Bankroll value reported by the simulation |
+| `SIMULATION_PLACEMENT_DELAY_MS` | `120000` | Delay before rechecking a discovered opportunity |
+| `SIMULATION_SCAN_INTERVAL_MS` | `60000` | Time between simulation scans |
+| `SIMULATION_STANDARD_MATCH_WINNER_ONLY` | `true` | Restrict simulation to standard match-winner markets |
+| `DISCORD_WEBHOOK_URL` | — | Discord channel webhook used for simulation opportunity reports |
+| `DISCORD_NOTIFICATIONS_ENABLED` | enabled | Set to `false` to disable Discord delivery |
+
+The start endpoint can override the four simulation settings using `bankroll`, `placementDelayMs`, `scanIntervalMs`, and `standardMatchWinnerOnly` in its JSON body.
+
+## API
+
+All routes are served from the backend origin (for example `http://localhost:3000`).
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `GET` | `/health` | Health status |
+| `GET` | `/odds` | Refresh/read provider event caches, fetch odds, and return combined arbitrage opportunities |
+| `POST` | `/arbitrage` | Calculate stakes and returns from `{ "odds": [2.1, 2.1], "bankroll": 100 }` |
+| `GET` | `/simulations` | Read simulation status, counters, cached event IDs, pending opportunities, and simulated bets |
+| `POST` | `/simulations/start` | Start the simulation; optional JSON settings described above |
+| `POST` | `/simulations/stop` | Stop scans and pending placement timers |
+| `GET` | `/cache/events` | Inspect shared provider event caches |
+| `POST` | `/cache/refresh-events` | Refresh UK provider event cache |
+| `POST` | `/cache/refresh-sgo-events` | Refresh SportsGameOdds event cache |
+| `GET` | `/debug/active-leagues` | Inspect enabled and configured SportsGameOdds leagues |
+| `GET` | `/debug/arbitrage-test` | Run the built-in example-data calculation and return its results |
+
+See [ReadOddsFlow.md](ReadOddsFlow.md) for the odds and route flow. Simulation state is process-local and is cleared on restart.
+
+## Project layout
+
+```text
+backend/
+  src/
+    automation/   # Bookmaker bet-placing automation (under dev)
+    config/       # Provider and server configuration
+    controllers/  # HTTP request handlers
+    routes/       # Express route definitions
+    services/     # Odds, arbitrage, cache, notification, and simulation logic
+    utils/        # Odds transforms, validation, calculations, and logging
+  tests/          # Node test-runner tests
 ```
 
----
+## License
 
-# Environment Variables
+MIT. See [LICENSE](LICENSE).
 
-Create a `.env` file inside the `backend` directory.
+## Authors
 
-```env
-PORT=3000
-
-ODDS_API_KEY=
-
-HEADLESS=true
-```
-
-Additional environment variables for sportsbook credentials and notifications will be introduced in later phases.
-
----
-
-# Project Goals
-
-The MVP focuses on:
-
-* Supporting two sportsbooks
-* Detecting arbitrage opportunities in real time
-* Calculating optimal stake sizes
-* Providing a simple web dashboard
-* Building a clean and maintainable codebase that can be extended as new sportsbooks and features are added
-
----
-
-# License
-
-This project is licensed under the MIT License.
+Brian Xu and Abhinav Pandley 

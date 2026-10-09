@@ -11,6 +11,14 @@ venv/
 # Environment variables
 .env
 
+# Node.js dependencies
+node_modules/
+
+# Local browser profiles, logs, and temporary debugging output
+/backend/src/automation/profiles/
+/backend/logs/
+/backend/.tmp-*-debug.jsonl
+
 # IDE
 .vscode/
 .idea/
